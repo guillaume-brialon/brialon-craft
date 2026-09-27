@@ -21,12 +21,21 @@ export default function Detector(_: ToolProps) {
 
   useEffect(() => {
     let id: number
+    // En arrière-plan, le navigateur retarde chaque minuterie : les retards successifs forment une seule pause,
+    // enregistrée au premier tour revenu à l'heure
+    let pausedSince: number | undefined
+    let lastLate = 0
     const wait = () => {
       const start = Date.now()
       id = window.setTimeout(() => {
-        const lost = Date.now() - start - DELAY_MS
-        if (lost > DELAY_MS) {
-          setPauses(current => [{ at: Date.now(), lostMs: lost }, ...current].slice(0, MAX_ENTRIES))
+        const now = Date.now()
+        if (now - start - DELAY_MS > DELAY_MS) {
+          pausedSince ??= start + DELAY_MS
+          lastLate = now
+        } else if (pausedSince !== undefined) {
+          const pause = { at: lastLate, lostMs: lastLate - pausedSince }
+          setPauses(current => [pause, ...current].slice(0, MAX_ENTRIES))
+          pausedSince = undefined
         }
         wait()
       }, DELAY_MS)
