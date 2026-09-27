@@ -1,5 +1,5 @@
 .facts .result { min-height: 5.2em; }
-.facts .btn { align-self: flex-start; }
+.facts .button { align-self: flex-start; }
 /* Diagramme d'origine : fond blanc conservé en mode sombre */
 .facts .diagram {
   display: block;

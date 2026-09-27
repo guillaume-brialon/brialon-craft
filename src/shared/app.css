@@ -1,7 +1,16 @@
 /* Base commune des outils, dans le cadre comme en page seule.
+   Les outils ne dépendent du site que par ses variables (tokens.css) et ses polices :
+   aucune classe de site.css n'est utilisée ici.
    Les tailles suivent le conteneur (cadre ou écran) et non la fenêtre. */
+@import './button.css';
+
+.app, .app *, .app *::before, .app *::after { box-sizing: border-box; }
+.app p { margin: 0; }
+.app a { color: var(--brand); text-underline-offset: 3px; }
 .app {
   min-height: 100%;
+  font-family: var(--body);
+  color: var(--ink);
   display: flex;
   flex-direction: column;
   gap: max(12px, 4cqmin);
@@ -20,8 +29,7 @@
   color: var(--brand);
   overflow-wrap: anywhere;
 }
-.app .btn { font: inherit; font-weight: 600; font-size: 0.9em; cursor: pointer; justify-content: center; }
-.app .btn:disabled { opacity: .45; cursor: default; }
+.app .button { font-size: 0.9em; }
 .app .field { display: flex; flex-direction: column; gap: 6px; }
 .app .field label { font-weight: 500; }
 .app input[type=text], .app textarea {

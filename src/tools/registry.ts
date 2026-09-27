@@ -73,7 +73,7 @@ export const TOOLS: Tool[] = [
   {
     id: 'facts',
     label: 'Générateur',
-    title: 'Calendar facts',
+    title: 'Anecdotes de calendrier xkcd',
     description: 'Générez un fait aléatoire (en anglais) d\'après un diagramme de xkcd.',
     orientation: 'portrait',
     path: '/facts',
