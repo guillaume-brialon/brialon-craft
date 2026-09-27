@@ -28,3 +28,7 @@ prop-types (countdown).
 
 Le build écrira dans `../brialon.com/www/craft/`, le dépôt du site étant
 cloné à côté de celui-ci.
+
+## Licence
+
+[MIT](LICENSE)
