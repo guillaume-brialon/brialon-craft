@@ -1,1 +1,3 @@
 .footprint .result { font-variant-numeric: tabular-nums; }
+/* Largeur réservée au plus grand montant (200 000 €) : le retour à la ligne ne dépend pas du montant */
+.footprint .amount { display: inline-block; min-width: 4.5em; white-space: nowrap; font-variant-numeric: tabular-nums; }
