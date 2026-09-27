@@ -33,7 +33,7 @@ export default function Footprint(_: ToolProps) {
 
       <div className="field">
         <label htmlFor="footprint-income">
-          Revenu net fiscal mensuel du foyer : <strong>{formatWithUnit(income, '€')}</strong>
+          Revenu net fiscal mensuel du foyer : <strong className="amount">{formatWithUnit(income, '€')}</strong>
         </label>
         <input id="footprint-income" type="range" min="0" max={SLIDER_MAX} value={position}
                onChange={e => setPosition(Number(e.target.value))}/>
