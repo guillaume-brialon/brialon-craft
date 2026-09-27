@@ -1,0 +1,13 @@
+.chrono { justify-content: center; text-align: center; }
+.chrono .time {
+  font-family: var(--mono);
+  font-size: 2.2em;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  color: var(--brand-deep);
+  font-variant-numeric: tabular-nums;
+}
+.chrono .hundredths { font-size: 0.55em; color: var(--brand-soft); user-select: none; }
+.chrono .field { text-align: left; }
+.chrono .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6em; }
+.chrono .new { font-size: 0.85em; }

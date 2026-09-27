@@ -1,0 +1,43 @@
+.coffee { gap: 0; padding-block: max(10px, 3.5cqmin); }
+.coffee ul { list-style: none; margin: 0; padding: 0; }
+.coffee li {
+  display: grid;
+  grid-template-columns: 1fr auto 2.2em auto;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0.22em 0;
+  border-bottom: 1px solid var(--line);
+}
+.coffee .drink { color: var(--muted); }
+.coffee .ordered .drink { color: var(--ink); font-weight: 500; }
+.coffee output { text-align: center; font-weight: 600; font-variant-numeric: tabular-nums; }
+.coffee li button {
+  display: grid;
+  place-items: center;
+  width: 1.9em;
+  height: 1.55em;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  background: var(--brand);
+  color: var(--surface);
+  font: inherit;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.coffee li button:hover { background: var(--brand-deep); }
+.coffee li button:disabled { background: var(--line); color: var(--muted); cursor: default; }
+.coffee .summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1em;
+  margin-top: auto;
+  padding-top: 0.8em;
+  font-family: var(--mono);
+  font-size: 0.85em;
+  color: var(--muted);
+}
+.coffee .summary .btn { font-family: var(--body); padding: 0.45em 0.9em; }

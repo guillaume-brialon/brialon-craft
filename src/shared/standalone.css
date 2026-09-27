@@ -1,0 +1,11 @@
+/* Page seule : l'outil occupe tout l'écran, comme dans le cadre de la page Artisanat */
+html, body { height: 100%; }
+body.standalone { overflow: hidden; }
+#root {
+  container-type: size;
+  height: 100svh;
+  overflow: hidden auto;
+  padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-left, 0);
+}
+/* Sur grand écran, l'outil garde une largeur de téléphone */
+#root > .app { max-width: 480px; margin-inline: auto; }

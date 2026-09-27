@@ -1,0 +1,23 @@
+.detector .watch { font-family: var(--display); font-weight: 600; font-size: 1.2em; color: var(--brand-deep); }
+.detector .dot {
+  display: inline-block;
+  width: 0.6em;
+  height: 0.6em;
+  margin-right: 0.6em;
+  border-radius: 50%;
+  background: var(--meadow);
+  box-shadow: 0 0 0 0.25em color-mix(in srgb, var(--meadow) 25%, transparent);
+  animation: detector-pulse 2s ease-in-out infinite;
+}
+@keyframes detector-pulse { 50% { opacity: 0.35; } }
+@media (prefers-reduced-motion: reduce) { .detector .dot { animation: none; } }
+.detector ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.4em; font-family: var(--mono); font-size: 0.85em; }
+.detector li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+  padding: 0.5em 0.75em;
+  border-radius: var(--radius);
+  background: var(--brand-wash);
+  color: var(--brand);
+}

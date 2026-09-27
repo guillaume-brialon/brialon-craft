@@ -1,0 +1,22 @@
+.countdown { align-items: center; justify-content: space-evenly; text-align: center; }
+.countdown .heading { display: grid; gap: 0.2em; }
+.countdown .title {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 2em;
+  line-height: 1.1;
+  color: var(--brand-deep);
+}
+.countdown svg { width: min(80cqmin, 100%); aspect-ratio: 1; }
+.countdown circle { fill: none; stroke-width: 7; }
+.countdown .trail { stroke: var(--line); }
+.countdown .path { stroke: var(--brand); transform: rotate(-90deg); transform-origin: center; }
+.countdown text {
+  font-family: var(--mono);
+  font-size: 17px;
+  fill: var(--brand-deep);
+  text-anchor: middle;
+  dominant-baseline: central;
+  font-variant-numeric: tabular-nums;
+}
+.countdown .segmented { width: min(100%, 22em); }
