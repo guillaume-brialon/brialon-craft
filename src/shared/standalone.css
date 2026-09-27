@@ -1,6 +1,7 @@
-/* Page seule : l'outil occupe tout l'écran, comme dans le cadre de la page Artisanat */
-html, body { height: 100%; }
-body.standalone { overflow: hidden; }
+/* Page seule : l'outil occupe tout l'écran, comme dans le cadre de la page Artisanat.
+   Seuls tokens.css et fonts.css du site sont chargés. */
+html { height: 100%; -webkit-text-size-adjust: 100%; }
+body.standalone { height: 100%; margin: 0; overflow: hidden; background: var(--ground); }
 #root {
   container-type: size;
   height: 100svh;

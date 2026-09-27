@@ -35,7 +35,7 @@ const Coffee = (_: ToolProps) => {
       </ul>
       <div className="summary">
         <span>{total} {total >= 2 ? 'boissons' : 'boisson'}</span>
-        <button type="button" className="btn btn-ghost" disabled={total === 0} onClick={() => setCounts({})}>
+        <button type="button" className="button ghost" disabled={total === 0} onClick={() => setCounts({})}>
           Remettre à zéro
         </button>
       </div>

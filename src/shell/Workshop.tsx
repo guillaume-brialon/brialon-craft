@@ -1,5 +1,6 @@
 import { Suspense, useState, useSyncExternalStore } from 'react'
 import { sourceHref, toolById, TOOLS } from '../tools/registry.ts'
+import '../shared/button.css'
 import './workshop.css'
 
 /** Outil désigné par l'ancre de l'adresse, s'il y en a un */
@@ -50,8 +51,8 @@ const Workshop = () => {
         <h2>{tool.title}</h2>
         <p>{tool.description}</p>
         <div className="actions">
-          <a className="btn btn-primary" href={tool.path} target="_blank" rel="noopener">Ouvrir seul ↗</a>
-          <a className="btn btn-ghost" href={sourceHref(tool)} target="_blank" rel="noopener">Code source ↗</a>
+          <a className="button primary" href={tool.path} target="_blank" rel="noopener">Ouvrir seul ↗</a>
+          <a className="button ghost" href={sourceHref(tool)} target="_blank" rel="noopener">Code source ↗</a>
         </div>
         <p className="address">brialon.com{tool.path}</p>
       </div>

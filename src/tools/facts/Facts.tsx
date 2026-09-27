@@ -22,7 +22,7 @@ const Facts = (_: ToolProps) => {
         Un fait aléatoire (en anglais) d'après ce diagramme de <a href="https://xkcd.com/1930/">xkcd</a>.
       </p>
       <p className="result" lang="en" aria-live="polite">{text}</p>
-      <button type="button" className="btn btn-primary" onClick={() => setText(fact())}>Un autre fait</button>
+      <button type="button" className="button primary" onClick={() => setText(fact())}>Un autre fait</button>
       <a className="diagram" href="https://xkcd.com/1930/">
         <img src="https://imgs.xkcd.com/comics/calendar_facts.png" loading="lazy"
              alt="Diagramme xkcd « Calendar facts » : les enchaînements de mots qui composent chaque fait"/>

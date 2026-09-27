@@ -14,7 +14,7 @@ seul à sa propre adresse.
 | Chronomètre | `src/tools/chrono` | [brialon.com/chrono](https://brialon.com/chrono) |
 | Revenu éco-compatible | `src/tools/footprint` | [brialon.com/footprint](https://brialon.com/footprint) |
 | Lecture cryptée | `src/tools/scrambler` | [brialon.com/scrambler](https://brialon.com/scrambler) |
-| Calendar facts | `src/tools/facts` | [brialon.com/facts](https://brialon.com/facts) |
+| Anecdotes de calendrier xkcd | `src/tools/facts` | [brialon.com/facts](https://brialon.com/facts) |
 | Détecteur d'arrière-plan | `src/tools/detector` | [brialon.com/detector](https://brialon.com/detector) |
 
 ## Organisation
@@ -25,9 +25,25 @@ seul à sa propre adresse.
 - `src/shell/` : l'atelier (liste des outils, cadre, fiche).
 - `src/shared/` : styles et utilitaires communs.
 
-Les outils reprennent les couleurs et polices du site : `site.css` et `fonts.css` sont
-chargés depuis `/assets/` sur brialon.com. Leurs tailles suivent le cadre (unités `cqmin`),
-si bien qu'un outil s'affiche de la même façon dans le cadre et en page seule.
+Les tailles des outils suivent le cadre (unités `cqmin`), si bien qu'un outil s'affiche
+de la même façon dans le cadre et en page seule.
+
+## Dépendances au site
+
+Les outils reprennent les couleurs et polices de brialon.com, chargées depuis `/assets/`.
+Le site les garde stables : chaque fichier concerné commence par son contrat avec l'artisanat.
+
+| Fichier du site | Chargé par | Utilisé pour |
+|---|---|---|
+| `css/tokens.css` | toutes les pages | variables de couleurs (clair et sombre), de polices et de tailles |
+| `css/fonts.css` | toutes les pages | polices Figtree, Archivo et Chivo Mono |
+| `css/site.css` | page Artisanat | en-tête, pied de page, mise en page (`.wrap`, `.label`, `.section-head`) |
+| `js/site.js` | page Artisanat | bouton de thème, hauteur de l'en-tête (`--header-h`), coordonnées |
+| `img/favicon.png` | page Artisanat et outils sans icône propre | icône d'onglet |
+
+Les outils n'utilisent aucune classe de `site.css` : leurs pages seules ne chargent que
+`tokens.css` et `fonts.css`. Sans le site (clone isolé), ils fonctionnent sans ses couleurs
+ni ses polices.
 
 ## Développement
 

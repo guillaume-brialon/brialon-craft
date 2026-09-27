@@ -57,8 +57,8 @@ const Chrono = ({ standalone }: ToolProps) => {
         <input id="chrono-name" type="text" value={name} onChange={e => setName(e.target.value)}/>
       </div>
       <div className="controls">
-        <button type="button" className="btn btn-primary" onClick={toggle}>{running ? 'Arrêter' : 'Démarrer'}</button>
-        <button type="button" className="btn btn-ghost" onClick={reset} disabled={elapsed === 0}>Remettre à zéro</button>
+        <button type="button" className="button primary" onClick={toggle}>{running ? 'Arrêter' : 'Démarrer'}</button>
+        <button type="button" className="button ghost" onClick={reset} disabled={elapsed === 0}>Remettre à zéro</button>
       </div>
       <a className="new" href={toolById('chrono')!.path} target="_blank" rel="noopener">
         Nouveau chronomètre dans un onglet ↗

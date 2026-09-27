@@ -40,4 +40,4 @@
   font-size: 0.85em;
   color: var(--muted);
 }
-.coffee .summary .btn { font-family: var(--body); padding: 0.45em 0.9em; }
+.coffee .summary .button { font-family: var(--body); padding: 0.45em 0.9em; }
