@@ -3,31 +3,52 @@
 Petits outils web construits sur mon temps libre, présentés dans la rubrique
 [Artisanat](https://brialon.com/craft/) de brialon.com.
 
-## État
+Une seule application React (Vite + TypeScript) : chaque outil est un composant,
+affiché dans un cadre façon écran de téléphone sur la page Artisanat, et accessible
+seul à sa propre adresse.
 
-Les sources sont importées depuis leurs projets d'origine, sans leur historique,
-et mises aux conventions de ce dépôt (fonctions flèches, abonnements plutôt
-qu'effets, HTML indenté). Elles seront réunies en une seule application React
-(Vite + TypeScript) : chaque outil devient un composant, affiché dans un cadre
-sur la page Artisanat et accessible seul à sa propre adresse.
+| Outil | Dossier | Page seule |
+|---|---|---|
+| Commande de cafés | `src/tools/coffee` | [brialon.com/coffee](https://brialon.com/coffee) |
+| Décompte perpétuel | `src/tools/countdown` | [brialon.com/to/15](https://brialon.com/to/15) (`/to/30`, `/to/60`…) |
+| Chronomètre | `src/tools/chrono` | [brialon.com/chrono](https://brialon.com/chrono) |
+| Revenu éco-compatible | `src/tools/footprint` | [brialon.com/craft/footprint/](https://brialon.com/craft/footprint/) |
+| Lecture cryptée | `src/tools/scrambler` | [brialon.com/craft/scrambler/](https://brialon.com/craft/scrambler/) |
+| Calendar facts | `src/tools/facts` | [brialon.com/craft/facts/](https://brialon.com/craft/facts/) |
+| Détecteur d'arrière-plan | `src/tools/detector` | [brialon.com/detector](https://brialon.com/detector) |
 
-| Dossier | Outil | Adresse actuelle | Origine |
-|---|---|---|---|
-| `src/tools/coffee` | Commande de cafés | brialon.com/coffee | projet `coffee-order` (Create React App) |
-| `src/tools/countdown` | Décompte perpétuel | brialon.com/to/15 | projet `perpetual-countdown` (Create React App) |
-| `src/tools/detector` | Détecteur de mise en arrière-plan | brialon.com/detector | page HTML autonome |
+## Organisation
 
-`brialon.com/quart-d-heure`, version antérieure du décompte perpétuel,
-devient une simple redirection vers `brialon.com/to/15`.
+- `index.html` : page Artisanat (en-tête et pied de page du site, atelier React au centre).
+- `<outil>/index.html` : page seule de chaque outil.
+- `src/tools/registry.ts` : liste des outils, avec titre, description, orientation et adresse.
+- `src/shell/` : l'atelier (liste des outils, cadre, fiche).
+- `src/shared/` : styles et utilitaires communs.
 
-Dépendances des projets d'origine : React 18.2, react-icons 4.9 (coffee) ;
-react-router-dom 6.8, react-circular-progressbar 2.1, @fontsource/days-one 4.5,
-prop-types (countdown).
+Les outils reprennent les couleurs et polices du site : `site.css` et `fonts.css` sont
+chargés depuis `/assets/` sur brialon.com. Leurs tailles suivent le cadre (unités `cqmin`),
+si bien qu'un outil s'affiche de la même façon dans le cadre et en page seule.
 
-## Construction
+## Développement
 
-Le build écrira dans `../brialon.com/www/craft/`, le dépôt du site étant
-cloné à côté de celui-ci.
+Le dépôt du site doit être cloné à côté de celui-ci (`../brialon.com`) : en
+développement, Vite y lit les styles communs, et le build y écrit la rubrique.
+
+```sh
+yarn            # installe les dépendances
+yarn dev        # http://localhost:5173/craft/
+yarn build      # vérifie les types et écrit dans ../brialon.com/www/craft/
+```
+
+La variable `SITE_DIR` permet de pointer ailleurs que `../brialon.com/www`.
+
+## Ajouter un outil
+
+1. Créer `src/tools/<id>/` avec un composant par défaut qui reçoit `ToolProps`.
+2. Le déclarer dans `src/tools/registry.ts`.
+3. Ajouter la page seule `<id>/index.html` (copie d'une page existante) et l'id dans
+   la liste `TOOLS` de `vite.config.ts`.
+4. Au besoin, une adresse courte dans le `.htaccess` du site.
 
 ## Licence
 
