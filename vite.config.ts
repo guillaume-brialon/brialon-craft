@@ -34,6 +34,14 @@ function siteAssets(): Plugin {
       handler: html => html.replaceAll(`${BASE}assets/`, '/assets/'),
     },
     configureServer(server) {
+      // Adresses des pages seules, comme les réécrit le .htaccess du site : /<outil> et /to/<minutes>
+      server.middlewares.use((req, _res, next) => {
+        const [path, query = ''] = (req.url ?? '').split(/(?=\?)/)
+        const tool = /^\/([a-z-]+)\/?$/.exec(path)?.[1]
+        if (tool && TOOLS.includes(tool)) req.url = `${BASE}${tool}/index.html${query}`
+        else if (/^\/to(\/\d+)?\/?$/.test(path)) req.url = `${BASE}countdown/index.html${query}`
+        next()
+      })
       server.middlewares.use('/assets', (req, res, next) => {
         const path = decodeURIComponent((req.url ?? '').split('?')[0])
         const file = resolve(SITE_ASSETS, '.' + path)
