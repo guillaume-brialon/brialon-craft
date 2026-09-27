@@ -7,7 +7,7 @@ import './chrono.css'
 const MARK = { running: '▶', paused: '❚❚' }
 const pad = (n: number) => String(n).padStart(2, '0')
 
-export default function Chrono({ standalone }: ToolProps) {
+const Chrono = ({ standalone }: ToolProps) => {
   // Temps cumulé des périodes terminées, et début de la période en cours (null à l'arrêt)
   const [stacked, setStacked] = useState(0)
   const [startedAt, setStartedAt] = useState<number | null>(() => standalone ? Date.now() : null)
@@ -80,3 +80,5 @@ export default function Chrono({ standalone }: ToolProps) {
     </div>
   )
 }
+
+export default Chrono

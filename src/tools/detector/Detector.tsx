@@ -15,7 +15,7 @@ interface Pause {
 const time = (ms: number) => new Date(ms).toLocaleTimeString('fr')
 const seconds = (ms: number) => new Intl.NumberFormat('fr', { maximumFractionDigits: 1 }).format(ms / 1000)
 
-export default function Detector(_: ToolProps) {
+const Detector = (_: ToolProps) => {
   const [pauses, setPauses] = useState<Pause[]>([])
   const [since] = useState(Date.now)
 
@@ -65,3 +65,5 @@ export default function Detector(_: ToolProps) {
     </div>
   )
 }
+
+export default Detector

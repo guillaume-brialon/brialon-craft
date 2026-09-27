@@ -90,10 +90,10 @@ export const TOOLS: Tool[] = [
   },
 ]
 
-export function toolById(id: string | undefined): Tool | undefined {
+export const toolById = (id: string | undefined): Tool | undefined => {
   return TOOLS.find(tool => tool.id === id)
 }
 
-export function sourceHref(tool: Tool): string {
+export const sourceHref = (tool: Tool): string => {
   return `${REPO_URL}/tree/main/src/tools/${tool.id}`
 }

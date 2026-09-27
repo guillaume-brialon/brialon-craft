@@ -4,7 +4,7 @@ import { FACTS, type FactNode } from './facts-data.ts'
 import '../../shared/app.css'
 import './facts.css'
 
-function generate(node: FactNode): string {
+const generate = (node: FactNode): string => {
   if (typeof node === 'string') return node
   if ('seq' in node) return node.seq.map(generate).join(' ')
   return generate(node.alt[Math.floor(Math.random() * node.alt.length)])
@@ -13,7 +13,7 @@ function generate(node: FactNode): string {
 // Ponctuation collée au mot précédent, à l'anglaise
 const fact = () => generate(FACTS).replace(/ \?/g, '?')
 
-export default function Facts(_: ToolProps) {
+const Facts = (_: ToolProps) => {
   const [text, setText] = useState(fact)
 
   return (
@@ -30,3 +30,5 @@ export default function Facts(_: ToolProps) {
     </div>
   )
 }
+
+export default Facts

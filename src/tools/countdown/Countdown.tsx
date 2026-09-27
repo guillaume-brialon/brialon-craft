@@ -11,7 +11,7 @@ const RADIUS = 44
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS
 
 /** Diviseur de 60 le plus proche : le décompte retombe toujours sur une heure pile */
-function closestHourDivisor(minutes: number): number {
+const closestHourDivisor = (minutes: number): number => {
   let lower = Math.min(minutes, 60)
   while (60 % lower > 0) lower--
   let greater = Math.min(minutes, 60)
@@ -19,12 +19,12 @@ function closestHourDivisor(minutes: number): number {
   return minutes - lower <= greater - minutes ? lower : greater
 }
 
-function normalize(minutes: number): number {
+const normalize = (minutes: number): number => {
   if (!minutes || minutes < 1) return DEFAULT_MINUTES
   return minutes === EASTER_EGG_MINUTES ? minutes : closestHourDivisor(minutes)
 }
 
-function title(minutes: number): string {
+const title = (minutes: number): string => {
   switch (minutes) {
     case 15: return 'quart d\'heure'
     case 30: return 'demi-heure'
@@ -35,20 +35,20 @@ function title(minutes: number): string {
 }
 
 // Page seule : /to/<minutes> (adresse publique) ou ?min=<minutes>
-function minutesFromLocation(): number {
+const minutesFromLocation = (): number => {
   const fromPath = /\/to\/(\d+)\/?$/.exec(location.pathname)?.[1]
   const fromQuery = new URLSearchParams(location.search).get('min')
   return normalize(Number(fromPath ?? fromQuery))
 }
 
-function writeLocation(minutes: number) {
+const writeLocation = (minutes: number) => {
   const url = new URL(location.href)
   if (/^\/to(\/|$)/.test(url.pathname)) url.pathname = `/to/${minutes}`
   else url.searchParams.set('min', String(minutes))
   history.replaceState(null, '', url)
 }
 
-export default function Countdown({ standalone }: ToolProps) {
+const Countdown = ({ standalone }: ToolProps) => {
   const [minutes, setMinutes] = useState(() => standalone ? minutesFromLocation() : DEFAULT_MINUTES)
   const now = usePeriodicTimestamp(100)
 
@@ -86,3 +86,5 @@ export default function Countdown({ standalone }: ToolProps) {
     </div>
   )
 }
+
+export default Countdown

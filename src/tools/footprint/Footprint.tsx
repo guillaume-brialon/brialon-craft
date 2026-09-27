@@ -19,7 +19,7 @@ const overconsumption = DATA.nationalFootprint / DATA.bioCapacity
 const monthlyIncome = DATA.yearlyIncome / 12
 const ecoMonthlyIncome = monthlyIncome / overconsumption
 
-export default function Footprint(_: ToolProps) {
+const Footprint = (_: ToolProps) => {
   // Position de départ proche du revenu moyen français
   const [position, setPosition] = useState(500)
   const income = incomeAt(position)
@@ -85,3 +85,5 @@ export default function Footprint(_: ToolProps) {
     </div>
   )
 }
+
+export default Footprint

@@ -24,7 +24,7 @@ const TYPES: Record<string, string> = {
 
 // En développement, /assets/* (site.css, polices, site.js) est servi depuis le site voisin ;
 // au build, ces liens restent tels quels et pointent vers le site en ligne
-function siteAssets(): Plugin {
+const siteAssets = (): Plugin => {
   return {
     name: 'site-assets',
     // Vite préfixe les liens absolus du HTML par la base : on rend /assets/ au site

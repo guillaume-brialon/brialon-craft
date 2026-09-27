@@ -4,11 +4,11 @@ import '../shared/button.css'
 import './workshop.css'
 
 // L'outil affiché suit l'ancre de l'adresse ; les autres ancres (#contact) ne changent pas d'outil
-function idFromHash(): string | undefined {
+const idFromHash = (): string | undefined => {
   return toolById(location.hash.slice(1))?.id
 }
 
-export default function Workshop() {
+const Workshop = () => {
   const [id, setId] = useState(() => idFromHash() ?? TOOLS[0].id)
   const tool = toolById(id)!
 
@@ -63,3 +63,5 @@ export default function Workshop() {
     </div>
   )
 }
+
+export default Workshop

@@ -5,7 +5,7 @@ import '../../shared/app.css'
 const INITIAL_TEXT = 'Êtes-vous capable de lire ce texte même avec les lettres en désordre ? Essayez votre propre phrase.'
 const WORD = /[\p{L}\p{N}]+/gu
 
-function shuffle<T>(items: T[]): T[] {
+const shuffle = <T,>(items: T[]): T[] => {
   const result = [...items]
   for (let i = result.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
@@ -15,7 +15,7 @@ function shuffle<T>(items: T[]): T[] {
 }
 
 /** Mélange les lettres intérieures d'un mot, en évitant de le rendre intact quand c'est possible */
-export function scrambleWord(word: string): string {
+export const scrambleWord = (word: string): string => {
   const letters = [...word]
   if (letters.length < 4) return word
   const inner = letters.slice(1, -1)
@@ -27,7 +27,7 @@ export function scrambleWord(word: string): string {
   return result
 }
 
-export default function Scrambler(_: ToolProps) {
+const Scrambler = (_: ToolProps) => {
   const [text, setText] = useState(INITIAL_TEXT)
   const scrambled = useMemo(() => text.replace(WORD, scrambleWord), [text])
 
@@ -42,3 +42,5 @@ export default function Scrambler(_: ToolProps) {
     </div>
   )
 }
+
+export default Scrambler

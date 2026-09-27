@@ -11,7 +11,7 @@ const DRINKS = [
 
 type Counts = Record<string, number>
 
-export default function Coffee(_: ToolProps) {
+const Coffee = (_: ToolProps) => {
   const [counts, setCounts] = useState<Counts>({})
   const total = Object.values(counts).reduce((sum, count) => sum + count, 0)
 
@@ -42,3 +42,5 @@ export default function Coffee(_: ToolProps) {
     </div>
   )
 }
+
+export default Coffee
