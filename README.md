@@ -16,8 +16,8 @@ sur la page Artisanat et accessible seul à sa propre adresse.
 | `src/tools/countdown` | Décompte perpétuel | brialon.com/to/15 | projet `perpetual-countdown` (Create React App) |
 | `src/tools/detector` | Détecteur de mise en arrière-plan | brialon.com/detector | page HTML autonome |
 
-`brialon.com/quart-d-heure` est une version antérieure du décompte perpétuel,
-reprise par `brialon.com/to/15`.
+`brialon.com/quart-d-heure`, version antérieure du décompte perpétuel,
+devient une simple redirection vers `brialon.com/to/15`.
 
 Dépendances des projets d'origine : React 18.2, react-icons 4.9 (coffee) ;
 react-router-dom 6.8, react-circular-progressbar 2.1, @fontsource/days-one 4.5,
