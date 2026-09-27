@@ -1,0 +1,120 @@
+/* ---------- Page Artisanat ---------- */
+.workshop .wrap { padding-block: clamp(32px, 5vw, 56px) var(--section-pad); }
+.workshop .section-head { margin-bottom: 28px; }
+.workshop h1 { font-size: var(--step-3); }
+
+/* Hauteur disponible pour le cadre : il tient en entier sous le titre de la page */
+.bench {
+  --room: calc(100svh - var(--header-h, 72px) - 230px);
+  display: grid;
+  grid-template-columns: 250px auto minmax(0, 1fr);
+  grid-template-areas: "list device info";
+  gap: 32px;
+  align-items: start;
+}
+.bench[data-orientation="landscape"] {
+  grid-template-columns: 250px minmax(0, 1fr);
+  grid-template-areas: "list device" "list info";
+}
+
+/* ---------- Liste des outils ---------- */
+.tool-list {
+  grid-area: list;
+  position: sticky;
+  top: calc(var(--header-h, 72px) + 16px);
+}
+.tool-list ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.tool-list a {
+  display: grid;
+  gap: 2px;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  text-decoration: none;
+  transition: border-color .15s ease, background-color .15s ease;
+}
+.tool-list a:hover { border-color: var(--brand-soft); }
+.tool-list a[aria-current="page"] {
+  border-color: var(--brand);
+  background: var(--brand-wash);
+  box-shadow: inset 3px 0 0 var(--brand);
+}
+.tool-list .label { font-size: 0.7rem; color: var(--muted); }
+.tool-list strong { font-family: var(--display); font-weight: 600; }
+
+/* ---------- Cadre façon écran de téléphone ---------- */
+.device { grid-area: device; justify-self: center; display: grid; justify-items: center; }
+.bezel {
+  --bezel: var(--brand-deep);
+  max-width: 100%;
+  padding: 10px;
+  border-radius: 30px;
+  background: var(--bezel);
+  box-shadow: 0 30px 60px -30px rgba(0, 50, 97, .55);
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .bezel { --bezel: #203b58; } }
+:root[data-theme="dark"] .bezel { --bezel: #203b58; }
+
+/* Écran : conteneur de référence des outils (unités cqmin) */
+.screen {
+  container-type: size;
+  position: relative;
+  overflow: hidden auto;
+  overscroll-behavior: contain;
+  border-radius: 21px;
+  background: var(--ground);
+  width: min(390px, var(--room) * 9 / 16);
+  aspect-ratio: 9 / 16;
+}
+.bench[data-orientation="landscape"] .device { justify-self: stretch; }
+.bench[data-orientation="landscape"] .screen {
+  width: min(720px, var(--room) * 16 / 9);
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
+}
+.loading { padding: 24px; color: var(--muted); }
+
+/* ---------- Fiche de l'outil ---------- */
+.tool-info {
+  grid-area: info;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-top: 8px;
+}
+.tool-info h2 { font-size: var(--step-2); }
+.tool-info p { color: var(--muted); }
+.tool-info .actions { display: flex; flex-wrap: wrap; gap: 10px; padding-top: 4px; }
+.tool-info .address { font-family: var(--mono); font-size: var(--step--1); }
+
+/* ---------- Réactivité ---------- */
+@media (max-width: 1000px) {
+  .bench, .bench[data-orientation="landscape"] {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas: "list list" "device info";
+  }
+  .bench[data-orientation="landscape"] { grid-template-areas: "list list" "device device" "info info"; }
+  /* Liste en rangée défilante */
+  .tool-list { position: static; min-width: 0; }
+  .tool-list ul { display: flex; overflow-x: auto; padding-bottom: 6px; scrollbar-width: thin; }
+  .tool-list li { flex: none; }
+  .tool-list .label { display: none; }
+  .tool-list a { padding: 7px 12px; }
+}
+@media (max-width: 640px) {
+  .bench, .bench[data-orientation="landscape"] {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "list" "device" "info";
+    gap: 20px;
+  }
+  /* Sur téléphone, le cadre s'efface : l'outil prend toute la largeur */
+  .device { justify-self: stretch; justify-items: stretch; }
+  .bezel { padding: 0; border-radius: var(--radius); background: transparent; box-shadow: none; border: 1px solid var(--line-strong); }
+  .screen, .bench[data-orientation="landscape"] .screen {
+    width: 100%;
+    border-radius: var(--radius);
+  }
+  .screen { aspect-ratio: auto; height: calc(100svh - var(--header-h, 64px) - 120px); }
+}
