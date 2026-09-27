@@ -51,9 +51,9 @@ Le dépôt du site doit être cloné à côté de celui-ci (`../brialon.com`) : 
 développement, Vite y lit les styles communs, et le build y écrit la rubrique.
 
 ```sh
-npm install
-npm run dev     # http://localhost:5173/craft/
-npm run build   # vérifie les types et écrit dans ../brialon.com/www/craft/
+yarn            # installe les dépendances
+yarn dev        # http://localhost:5173/craft/
+yarn build      # vérifie les types et écrit dans ../brialon.com/www/craft/
 ```
 
 La variable `SITE_DIR` permet de pointer ailleurs que `../brialon.com/www`.
