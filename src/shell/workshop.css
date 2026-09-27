@@ -1,5 +1,5 @@
 /* ---------- Page Artisanat ---------- */
-.workshop .wrap { padding-block: clamp(32px, 5vw, 56px) var(--section-pad); }
+.workshop .wrap { padding-block: clamp(16px, 2.5vw, 28px) var(--section-pad); }
 .workshop .section-head { margin-bottom: 28px; }
 .workshop h1 { font-size: var(--step-3); }
 
