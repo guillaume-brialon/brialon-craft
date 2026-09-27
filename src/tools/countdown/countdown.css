@@ -13,6 +13,7 @@
 .countdown .path { stroke: var(--brand); transform: rotate(-90deg); transform-origin: center; }
 .countdown text {
   font-family: var(--mono);
+  font-weight: 700;
   font-size: 17px;
   fill: var(--brand-deep);
   text-anchor: middle;
