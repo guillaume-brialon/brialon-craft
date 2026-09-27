@@ -12,9 +12,9 @@ seul à sa propre adresse.
 | Commande de cafés | `src/tools/coffee` | [brialon.com/coffee](https://brialon.com/coffee) |
 | Décompte perpétuel | `src/tools/countdown` | [brialon.com/to/15](https://brialon.com/to/15) (`/to/30`, `/to/60`…) |
 | Chronomètre | `src/tools/chrono` | [brialon.com/chrono](https://brialon.com/chrono) |
-| Revenu éco-compatible | `src/tools/footprint` | [brialon.com/craft/footprint/](https://brialon.com/craft/footprint/) |
-| Lecture cryptée | `src/tools/scrambler` | [brialon.com/craft/scrambler/](https://brialon.com/craft/scrambler/) |
-| Calendar facts | `src/tools/facts` | [brialon.com/craft/facts/](https://brialon.com/craft/facts/) |
+| Revenu éco-compatible | `src/tools/footprint` | [brialon.com/footprint](https://brialon.com/footprint) |
+| Lecture cryptée | `src/tools/scrambler` | [brialon.com/scrambler](https://brialon.com/scrambler) |
+| Calendar facts | `src/tools/facts` | [brialon.com/facts](https://brialon.com/facts) |
 | Détecteur d'arrière-plan | `src/tools/detector` | [brialon.com/detector](https://brialon.com/detector) |
 
 ## Organisation
@@ -48,7 +48,7 @@ La variable `SITE_DIR` permet de pointer ailleurs que `../brialon.com/www`.
 2. Le déclarer dans `src/tools/registry.ts`.
 3. Ajouter la page seule `<id>/index.html` (copie d'une page existante) et l'id dans
    la liste `TOOLS` de `vite.config.ts`.
-4. Au besoin, une adresse courte dans le `.htaccess` du site.
+4. Ajouter son id à la réécriture des adresses dans le `.htaccess` du site.
 
 ## Licence
 

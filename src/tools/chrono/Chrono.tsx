@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { standaloneHref, toolById, type ToolProps } from '../registry.ts'
+import { toolById, type ToolProps } from '../registry.ts'
 import { useFrameTimestamp } from '../../shared/clock.ts'
 import { formatNumber, plural } from '../../shared/format.ts'
 import '../../shared/app.css'
@@ -60,7 +60,7 @@ const Chrono = ({ standalone }: ToolProps) => {
         <button type="button" className="btn btn-primary" onClick={toggle}>{running ? 'Arrêter' : 'Démarrer'}</button>
         <button type="button" className="btn btn-ghost" onClick={reset} disabled={elapsed === 0}>Remettre à zéro</button>
       </div>
-      <a className="new" href={standaloneHref(toolById('chrono')!)} target="_blank" rel="noopener">
+      <a className="new" href={toolById('chrono')!.path} target="_blank" rel="noopener">
         Nouveau chronomètre dans un onglet ↗
       </a>
     </div>

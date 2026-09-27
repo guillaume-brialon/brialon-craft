@@ -16,8 +16,8 @@ export interface Tool {
   description: string
   /** Portrait 9:16 ou paysage 16:9 dans le cadre */
   orientation: Orientation
-  /** Adresse courte de la page seule, réécrite vers /craft/<id>/ par le serveur */
-  shortPath: string
+  /** Adresse de la page seule, réécrite vers /craft/<id>/ par le serveur (.htaccess du site) */
+  path: string
   Component: LazyExoticComponent<ComponentType<ToolProps>>
 }
 
@@ -31,7 +31,7 @@ export const TOOLS: Tool[] = [
     title: 'Commande de cafés',
     description: 'Notez la commande de toute la tablée, boisson par boisson, puis remettez à zéro.',
     orientation: 'portrait',
-    shortPath: '/coffee',
+    path: '/coffee',
     Component: lazy(() => import('./coffee/Coffee.tsx')),
   },
   {
@@ -40,7 +40,7 @@ export const TOOLS: Tool[] = [
     title: 'Décompte perpétuel',
     description: 'Le temps restant jusqu\'au prochain quart d\'heure, demi-heure ou heure pile, pour caler une pause ou un time-box.',
     orientation: 'portrait',
-    shortPath: '/to/15',
+    path: '/to/15',
     Component: lazy(() => import('./countdown/Countdown.tsx')),
   },
   {
@@ -49,7 +49,7 @@ export const TOOLS: Tool[] = [
     title: 'Chronomètre',
     description: 'Comptabilisez le temps passé sur vos tâches : ouvrez un chronomètre par sujet, l\'onglet du navigateur montre s\'il tourne.',
     orientation: 'portrait',
-    shortPath: '/chrono',
+    path: '/chrono',
     Component: lazy(() => import('./chrono/Chrono.tsx')),
   },
   {
@@ -58,7 +58,7 @@ export const TOOLS: Tool[] = [
     title: 'Revenu éco-compatible',
     description: 'Combien de planètes votre revenu vous permet-il de consommer ?',
     orientation: 'portrait',
-    shortPath: '/craft/footprint/',
+    path: '/footprint',
     Component: lazy(() => import('./footprint/Footprint.tsx')),
   },
   {
@@ -67,7 +67,7 @@ export const TOOLS: Tool[] = [
     title: 'Lecture cryptée',
     description: 'Vérifiez les capacités cognitives de votre cerveau sur un texte aux lettres mélangées.',
     orientation: 'portrait',
-    shortPath: '/craft/scrambler/',
+    path: '/scrambler',
     Component: lazy(() => import('./scrambler/Scrambler.tsx')),
   },
   {
@@ -76,7 +76,7 @@ export const TOOLS: Tool[] = [
     title: 'Calendar facts',
     description: 'Générez un fait aléatoire (en anglais) d\'après un diagramme de xkcd.',
     orientation: 'portrait',
-    shortPath: '/craft/facts/',
+    path: '/facts',
     Component: lazy(() => import('./facts/Facts.tsx')),
   },
   {
@@ -85,18 +85,13 @@ export const TOOLS: Tool[] = [
     title: 'Détecteur d\'arrière-plan',
     description: 'Détecte quand le navigateur met la page en veille, en mesurant le retard pris par ses minuteries.',
     orientation: 'portrait',
-    shortPath: '/detector',
+    path: '/detector',
     Component: lazy(() => import('./detector/Detector.tsx')),
   },
 ]
 
 export const toolById = (id: string | undefined): Tool | undefined => {
   return TOOLS.find(tool => tool.id === id)
-}
-
-/** Adresse réelle de la page seule : fonctionne aussi sans les réécritures du serveur */
-export const standaloneHref = (tool: Tool): string => {
-  return `${import.meta.env.BASE_URL}${tool.id}/`
 }
 
 export const sourceHref = (tool: Tool): string => {
