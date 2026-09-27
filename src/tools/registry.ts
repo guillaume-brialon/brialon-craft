@@ -21,7 +21,7 @@ export interface Tool {
   Component: LazyExoticComponent<ComponentType<ToolProps>>
 }
 
-export const REPO_URL = 'https://github.com/gbrialon/brialon-craft'
+export const REPO_URL = 'https://github.com/guillaume-brialon/brialon-craft'
 
 // Ordre d'affichage dans la page Artisanat ; chaque outil n'est chargé qu'à l'ouverture
 export const TOOLS: Tool[] = [
@@ -38,7 +38,7 @@ export const TOOLS: Tool[] = [
     id: 'countdown',
     label: 'Minuteur',
     title: 'Décompte perpétuel',
-    description: 'Le temps restant jusqu\'au prochain quart d\'heure, demi-heure ou heure pile, pour caler une pause ou un time-box.',
+    description: 'Le temps restant jusqu\'au prochain quart d\'heure, demi-heure ou heure pile, pour caler une pause ou une time-box.',
     orientation: 'portrait',
     path: '/to/15',
     Component: lazy(() => import('./countdown/Countdown.tsx')),
@@ -73,7 +73,7 @@ export const TOOLS: Tool[] = [
   {
     id: 'facts',
     label: 'Générateur',
-    title: 'Anecdotes de calendrier xkcd',
+    title: 'Anecdotes xkcd',
     description: 'Générez un fait aléatoire (en anglais) d\'après un diagramme de xkcd.',
     orientation: 'portrait',
     path: '/facts',

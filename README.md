@@ -14,7 +14,7 @@ seul à sa propre adresse.
 | Chronomètre | `src/tools/chrono` | [brialon.com/chrono](https://brialon.com/chrono) |
 | Revenu éco-compatible | `src/tools/footprint` | [brialon.com/footprint](https://brialon.com/footprint) |
 | Lecture cryptée | `src/tools/scrambler` | [brialon.com/scrambler](https://brialon.com/scrambler) |
-| Anecdotes de calendrier xkcd | `src/tools/facts` | [brialon.com/facts](https://brialon.com/facts) |
+| Anecdotes xkcd | `src/tools/facts` | [brialon.com/facts](https://brialon.com/facts) |
 | Détecteur d'arrière-plan | `src/tools/detector` | [brialon.com/detector](https://brialon.com/detector) |
 
 ## Organisation
