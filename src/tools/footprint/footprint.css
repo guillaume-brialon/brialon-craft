@@ -1,3 +1,114 @@
-.footprint .result { font-variant-numeric: tabular-nums; }
-/* Largeur réservée au plus grand montant (200 000 €) : le retour à la ligne ne dépend pas du montant */
-.footprint .amount { display: inline-block; min-width: 4.5em; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.footprint .hint { font-size: 0.8em; color: var(--muted); }
+
+/* Revenu : libellé et montant sur une ligne, montant saisi sans les flèches du navigateur (le curseur les remplace) */
+.footprint .label-row { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.footprint .amount { display: inline-flex; align-items: baseline; gap: 4px; font-family: var(--mono); white-space: nowrap; }
+.footprint .amount input {
+  width: 6.5em;
+  font: 500 1em var(--mono);
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  padding: 0.25em 0.5em;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+.footprint .amount input::-webkit-inner-spin-button,
+.footprint .amount input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+
+/* Foyer : deux compteurs et les unités de consommation sur une ligne */
+.footprint .household { display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px; align-items: end; }
+.footprint .stepper-label { font-size: 0.8em; font-weight: 500; line-height: 1.25; }
+.footprint .stepper {
+  display: flex;
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.footprint .stepper .count {
+  flex: 1;
+  padding: 0.25em 0;
+  border-inline: 1px solid var(--line-strong);
+  text-align: center;
+  font: 500 1em var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+.footprint .stepper button {
+  flex: none;
+  width: 1.9em;
+  border: 0;
+  padding: 0;
+  font: 600 1.1em/1 var(--body);
+  color: var(--brand);
+  background: transparent;
+  cursor: pointer;
+}
+.footprint .stepper button:hover:not(:disabled) { background: var(--brand-wash); }
+.footprint .stepper button:disabled { color: var(--line-strong); cursor: default; }
+.footprint .units { font-family: var(--mono); font-size: 0.85em; color: var(--muted); padding-bottom: 0.35em; white-space: nowrap; }
+
+/* Résultat : grand nombre, une pastille par planète */
+.footprint .outcome {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 1px solid var(--line);
+  padding-top: max(12px, 4cqmin);
+}
+.footprint .big { display: flex; align-items: baseline; gap: 8px; font-family: var(--display); color: var(--brand); }
+.footprint .big .n { font-size: 2.6em; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
+.footprint .big .u { font-size: 1.2em; font-weight: 500; }
+.footprint .planets { display: flex; flex-wrap: wrap; gap: 5px; min-height: 22px; align-items: center; }
+/* La première planète est la nôtre ; les suivantes, en bleu clair, sont celles qui manquent */
+.footprint .planet {
+  position: relative;
+  overflow: hidden;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid var(--brand);
+  background: var(--brand-wash);
+}
+.footprint .planet i { position: absolute; inset: 0 auto 0 0; background: var(--brand); }
+.footprint .planet.extra { border-color: var(--brand-soft); }
+.footprint .planet.extra i { background: var(--brand-soft); }
+.footprint .planets .more { font-family: var(--mono); font-size: 0.8em; color: var(--muted); }
+
+/* Méthode : libellés à gauche, valeurs à droite */
+.footprint .steps {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  margin: 0.6em 0 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.footprint .steps > * { margin: 0; padding: 0.45em 0.7em; border-top: 1px solid var(--line); }
+.footprint .steps > :nth-child(-n+2) { border-top: 0; }
+.footprint .steps dd { font-family: var(--mono); text-align: right; white-space: nowrap; color: var(--ink); font-variant-numeric: tabular-nums; }
+.footprint .steps dd small { display: block; font-size: 0.85em; color: var(--muted); }
+.footprint .steps .key { background: var(--brand-wash); color: var(--ink); font-weight: 600; }
+
+/* Changements depuis 2014 */
+.footprint .table {
+  overflow-x: auto;
+  margin-top: 0.6em;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.footprint table { border-collapse: collapse; width: 100%; }
+.footprint th, .footprint td {
+  padding: 0.4em 0.6em;
+  border-top: 1px solid var(--line);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.footprint td { font-family: var(--mono); color: var(--ink); }
+.footprint :is(th, td):first-child { text-align: left; white-space: normal; font-family: var(--body); color: var(--muted); }
+.footprint thead th { border-top: 0; font: 500 0.85em var(--mono); color: var(--brand-soft); }
