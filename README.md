@@ -9,12 +9,12 @@ seul à sa propre adresse.
 
 | Outil | Dossier | Page seule |
 |---|---|---|
-| Commande de cafés | `src/tools/coffee` | [brialon.com/coffee](https://brialon.com/coffee) |
 | Décompte perpétuel | `src/tools/countdown` | [brialon.com/to/15](https://brialon.com/to/15) (`/to/30`, `/to/60`…) |
+| Aide au Quordle | `src/tools/quordle` | [brialon.com/quordle](https://brialon.com/quordle) |
 | Chronomètre | `src/tools/chrono` | [brialon.com/chrono](https://brialon.com/chrono) |
+| Commande de cafés | `src/tools/coffee` | [brialon.com/coffee](https://brialon.com/coffee) |
 | Revenu éco-compatible | `src/tools/footprint` | [brialon.com/footprint](https://brialon.com/footprint) |
 | Lecture cryptée | `src/tools/scrambler` | [brialon.com/scrambler](https://brialon.com/scrambler) |
-| Aide au Quordle | `src/tools/quordle` | [brialon.com/quordle](https://brialon.com/quordle) |
 | Anecdotes xkcd | `src/tools/facts` | [brialon.com/facts](https://brialon.com/facts) |
 | Détecteur d'arrière-plan | `src/tools/detector` | [brialon.com/detector](https://brialon.com/detector) |
 
