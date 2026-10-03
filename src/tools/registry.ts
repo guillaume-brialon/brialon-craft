@@ -71,6 +71,15 @@ export const TOOLS: Tool[] = [
     Component: lazy(() => import('./scrambler/Scrambler.tsx')),
   },
   {
+    id: 'quordle',
+    label: 'Aide de jeu',
+    title: 'Aide au Quordle',
+    description: 'Retrouvez les mots de cinq lettres possibles d\'après les lettres déjà placées, celles à garder et celles à écarter.',
+    orientation: 'portrait',
+    path: '/quordle',
+    Component: lazy(() => import('./quordle/Quordle.tsx')),
+  },
+  {
     id: 'facts',
     label: 'Générateur',
     title: 'Anecdotes xkcd',

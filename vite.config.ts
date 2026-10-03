@@ -11,18 +11,19 @@ const SITE = resolve(ROOT, process.env.SITE_DIR ?? '../brialon.com/www')
 const SITE_ASSETS = resolve(SITE, 'assets')
 
 // Un outil = un dossier de src/tools/ et une page seule du même nom
-const TOOLS = ['coffee', 'countdown', 'chrono', 'footprint', 'scrambler', 'facts', 'detector']
+const TOOLS = ['coffee', 'countdown', 'chrono', 'footprint', 'scrambler', 'quordle', 'facts', 'detector']
 
 const TYPES: Record<string, string> = {
   '.css': 'text/css',
   '.js': 'text/javascript',
+  '.json': 'application/json',
   '.woff2': 'font/woff2',
   '.png': 'image/png',
   '.jpg': 'image/jpeg',
   '.svg': 'image/svg+xml',
 }
 
-// En développement, /assets/* (site.css, polices, site.js) est servi depuis le site voisin ;
+// En développement, /assets/* (site.css, polices, site.js, dictionnaire) est servi depuis le site voisin ;
 // au build, ces liens restent tels quels et pointent vers le site en ligne
 const siteAssets = (): Plugin => {
   return {

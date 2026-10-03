@@ -1,0 +1,84 @@
+/* Pastille de variation : fond propre, lisible en clair comme en sombre */
+.quordle { --more: #3d7a22; --fewer: #b23b2e; }
+
+/* Libellés des champs, en retrait */
+.quordle .caption, .quordle .filters label { font-size: 0.9em; font-weight: 400; color: var(--muted); }
+
+/* Lettres placées : cinq cases carrées */
+.quordle .cells { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.45em; }
+.quordle .cells input {
+  width: 100%;
+  min-width: 0;
+  aspect-ratio: 1;
+  padding: 0;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.9em;
+  text-align: center;
+  caret-color: transparent;
+}
+.quordle .cells input:focus { border-color: var(--brand); background: var(--brand-wash); }
+
+/* Lettres présentes ou absentes, où qu'elles soient */
+.quordle .filters { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 0.5em 0.7em; }
+.quordle .filters input { min-width: 0; font-family: var(--mono); letter-spacing: 0.08em; }
+.quordle > .button { align-self: flex-end; padding: 0.45em 0.9em; }
+
+.quordle .words {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6em;
+  padding: 0.7em 0.8em;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.quordle .count {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 1.9em;
+  font-family: var(--mono);
+  font-size: 0.85em;
+  color: var(--muted);
+}
+/* Pastille : apparaît, tient une seconde puis s'efface ; rejouée à chaque variation */
+.quordle .delta {
+  padding: 0.1em 0.6em;
+  border-radius: 4px;
+  background: var(--fewer);
+  color: #fff;
+  font-weight: 600;
+  opacity: 0;
+  animation: quordle-delta 1.6s ease;
+}
+.quordle .delta.more { background: var(--more); }
+@keyframes quordle-delta { 0%, 100% { opacity: 0; } 18%, 82% { opacity: 1; } }
+
+/* Liste en blocs : le navigateur ne met en page que ceux proches de l'écran, ce qui évite
+   une demi-seconde d'attente quand tout le dictionnaire s'affiche. Hors écran, la hauteur d'un bloc
+   est estimée pour quatre colonnes (--count : nombre de mots du bloc), puis retenue une fois mesurée. */
+.quordle .list { display: grid; gap: 0.15em; margin: -2px; font-family: var(--mono); font-size: 0.9em; }
+.quordle ul {
+  list-style: none;
+  margin: 0;
+  /* Place pour le contour de focus, que le confinement rognerait au bord du bloc */
+  padding: 2px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(4.2em, 1fr));
+  gap: 0.15em 0.5em;
+  content-visibility: auto;
+  contain-intrinsic-block-size: auto calc(var(--count) / 4 * 1.65em);
+}
+/* Mot retiré de la liste par un clic */
+.quordle li button {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+.quordle li button:hover, .quordle li button:focus-visible { color: var(--muted); text-decoration: line-through; }
+.quordle li button:focus-visible { outline-offset: 0; }
