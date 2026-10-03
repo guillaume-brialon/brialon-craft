@@ -26,15 +26,6 @@ export const REPO_URL = 'https://github.com/guillaume-brialon/brialon-craft'
 // Ordre d'affichage dans la page Artisanat ; chaque outil n'est chargé qu'à l'ouverture
 export const TOOLS: Tool[] = [
   {
-    id: 'coffee',
-    label: 'Utilitaire',
-    title: 'Commande de cafés',
-    description: 'Notez la commande de toute la tablée, boisson par boisson, puis remettez à zéro.',
-    orientation: 'portrait',
-    path: '/coffee',
-    Component: lazy(() => import('./coffee/Coffee.tsx')),
-  },
-  {
     id: 'countdown',
     label: 'Minuteur',
     title: 'Décompte perpétuel',
@@ -44,6 +35,15 @@ export const TOOLS: Tool[] = [
     Component: lazy(() => import('./countdown/Countdown.tsx')),
   },
   {
+    id: 'quordle',
+    label: 'Aide de jeu',
+    title: 'Aide au Quordle',
+    description: 'Retrouvez les mots de cinq lettres possibles d\'après les lettres déjà placées, celles à garder et celles à écarter.',
+    orientation: 'portrait',
+    path: '/quordle',
+    Component: lazy(() => import('./quordle/Quordle.tsx')),
+  },
+  {
     id: 'chrono',
     label: 'Utilitaire',
     title: 'Chronomètre',
@@ -51,6 +51,15 @@ export const TOOLS: Tool[] = [
     orientation: 'portrait',
     path: '/chrono',
     Component: lazy(() => import('./chrono/Chrono.tsx')),
+  },
+  {
+    id: 'coffee',
+    label: 'Utilitaire',
+    title: 'Commande de cafés',
+    description: 'Notez la commande de toute la tablée, boisson par boisson, puis remettez à zéro.',
+    orientation: 'portrait',
+    path: '/coffee',
+    Component: lazy(() => import('./coffee/Coffee.tsx')),
   },
   {
     id: 'footprint',
@@ -69,15 +78,6 @@ export const TOOLS: Tool[] = [
     orientation: 'portrait',
     path: '/scrambler',
     Component: lazy(() => import('./scrambler/Scrambler.tsx')),
-  },
-  {
-    id: 'quordle',
-    label: 'Aide de jeu',
-    title: 'Aide au Quordle',
-    description: 'Retrouvez les mots de cinq lettres possibles d\'après les lettres déjà placées, celles à garder et celles à écarter.',
-    orientation: 'portrait',
-    path: '/quordle',
-    Component: lazy(() => import('./quordle/Quordle.tsx')),
   },
   {
     id: 'facts',
