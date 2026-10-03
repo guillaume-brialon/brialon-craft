@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState, useSyncExternalStore } from 'react'
 import type { ToolProps } from '../registry.ts'
 import '../../shared/app.css'
 import './detector.css'
@@ -15,34 +15,42 @@ interface Pause {
 const time = (ms: number) => new Date(ms).toLocaleTimeString('fr')
 const seconds = (ms: number) => new Intl.NumberFormat('fr', { maximumFractionDigits: 1 }).format(ms / 1000)
 
-const Detector = (_: ToolProps) => {
-  const [pauses, setPauses] = useState<Pause[]>([])
-  const [since] = useState(Date.now)
+/** Journal des mises en veille, tenu tant qu'un composant y est abonné */
+const createPauseLog = () => {
+  let pauses: Pause[] = []
+  return {
+    subscribe: (notify: () => void) => {
+      let id: number
+      // En arrière-plan, le navigateur retarde chaque minuterie : les retards successifs forment une seule pause,
+      // enregistrée au premier tour revenu à l'heure
+      let pausedSince: number | undefined
+      let lastLate = 0
+      const wait = () => {
+        const start = Date.now()
+        id = window.setTimeout(() => {
+          const now = Date.now()
+          if (now - start - DELAY_MS > DELAY_MS) {
+            pausedSince ??= start + DELAY_MS
+            lastLate = now
+          } else if (pausedSince !== undefined) {
+            pauses = [{ at: lastLate, lostMs: lastLate - pausedSince }, ...pauses].slice(0, MAX_ENTRIES)
+            pausedSince = undefined
+            notify()
+          }
+          wait()
+        }, DELAY_MS)
+      }
+      wait()
+      return () => clearTimeout(id)
+    },
+    getSnapshot: () => pauses,
+  }
+}
 
-  useEffect(() => {
-    let id: number
-    // En arrière-plan, le navigateur retarde chaque minuterie : les retards successifs forment une seule pause,
-    // enregistrée au premier tour revenu à l'heure
-    let pausedSince: number | undefined
-    let lastLate = 0
-    const wait = () => {
-      const start = Date.now()
-      id = window.setTimeout(() => {
-        const now = Date.now()
-        if (now - start - DELAY_MS > DELAY_MS) {
-          pausedSince ??= start + DELAY_MS
-          lastLate = now
-        } else if (pausedSince !== undefined) {
-          const pause = { at: lastLate, lostMs: lastLate - pausedSince }
-          setPauses(current => [pause, ...current].slice(0, MAX_ENTRIES))
-          pausedSince = undefined
-        }
-        wait()
-      }, DELAY_MS)
-    }
-    wait()
-    return () => clearTimeout(id)
-  }, [])
+const Detector = (_: ToolProps) => {
+  const [log] = useState(createPauseLog)
+  const pauses = useSyncExternalStore(log.subscribe, log.getSnapshot)
+  const [since] = useState(Date.now)
 
   return (
     <div className="app detector">

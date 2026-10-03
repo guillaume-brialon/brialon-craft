@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { ToolProps } from '../registry.ts'
-import { usePeriodicTimestamp } from '../../shared/usePeriodicTimestamp.ts'
+import { usePeriodicTimestamp } from '../../shared/clock.ts'
 import '../../shared/app.css'
 import './countdown.css'
 
@@ -34,7 +34,7 @@ const title = (minutes: number): string => {
   }
 }
 
-// Page seule : /to/<minutes> (adresse publique) ou ?min=<minutes>
+/** Durée demandée par l'adresse de la page seule : /to/<minutes> (adresse publique) ou ?min=<minutes> */
 const minutesFromLocation = (): number => {
   const fromPath = /\/to\/(\d+)\/?$/.exec(location.pathname)?.[1]
   const fromQuery = new URLSearchParams(location.search).get('min')
@@ -52,6 +52,7 @@ const Countdown = ({ standalone }: ToolProps) => {
   const [minutes, setMinutes] = useState(() => standalone ? minutesFromLocation() : DEFAULT_MINUTES)
   const now = usePeriodicTimestamp(100)
 
+  // Seul effet conservé : l'adresse suit la durée dès l'arrivée, où une durée absente ou arrondie (/to/17) est corrigée
   useEffect(() => {
     if (standalone) writeLocation(minutes)
   }, [standalone, minutes])

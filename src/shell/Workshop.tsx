@@ -1,32 +1,28 @@
-import { Suspense, useEffect, useState } from 'react'
+import { Suspense, useState, useSyncExternalStore } from 'react'
 import { sourceHref, toolById, TOOLS } from '../tools/registry.ts'
 import '../shared/button.css'
 import './workshop.css'
 
-// L'outil affiché suit l'ancre de l'adresse ; les autres ancres (#contact) ne changent pas d'outil
+/** Outil désigné par l'ancre de l'adresse, s'il y en a un */
 const idFromHash = (): string | undefined => {
   return toolById(location.hash.slice(1))?.id
 }
 
+const subscribeToHash = (notify: () => void) => {
+  window.addEventListener('hashchange', notify)
+  return () => window.removeEventListener('hashchange', notify)
+}
+
 const Workshop = () => {
-  const [id, setId] = useState(() => idFromHash() ?? TOOLS[0].id)
+  // L'outil affiché suit l'ancre de l'adresse ; les autres ancres (#contact) ne changent pas d'outil
+  const hashId = useSyncExternalStore(subscribeToHash, idFromHash)
+  const [id, setId] = useState(hashId ?? TOOLS[0].id)
+  if (hashId && hashId !== id) setId(hashId)
   const tool = toolById(id)!
-
-  useEffect(() => {
-    const onHashChange = () => {
-      const next = idFromHash()
-      if (next) setId(next)
-    }
-    window.addEventListener('hashchange', onHashChange)
-    return () => window.removeEventListener('hashchange', onHashChange)
-  }, [])
-
-  useEffect(() => {
-    document.title = `${tool.title} · Artisanat`
-  }, [tool])
 
   return (
     <div className="bench" data-orientation={tool.orientation}>
+      <title>{`${tool.title} · Artisanat`}</title>
       <nav className="tool-list" aria-label="Outils">
         <ul>
           {TOOLS.map(item => (

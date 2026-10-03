@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { toolById, type ToolProps } from '../registry.ts'
+import { useFrameTimestamp } from '../../shared/clock.ts'
 import { formatNumber, plural } from '../../shared/format.ts'
 import '../../shared/app.css'
 import './chrono.css'
@@ -11,27 +12,12 @@ const Chrono = ({ standalone }: ToolProps) => {
   // Temps cumulé des périodes terminées, et début de la période en cours (null à l'arrêt)
   const [stacked, setStacked] = useState(0)
   const [startedAt, setStartedAt] = useState<number | null>(() => standalone ? Date.now() : null)
-  const [now, setNow] = useState(Date.now)
   const [name, setName] = useState('Chrono')
-  const frame = useRef(0)
 
   const running = startedAt !== null
-  const elapsed = stacked + (running ? now - startedAt : 0)
-
-  useEffect(() => {
-    if (!running) return
-    const tick = () => {
-      setNow(Date.now())
-      frame.current = requestAnimationFrame(tick)
-    }
-    tick()
-    return () => cancelAnimationFrame(frame.current)
-  }, [running])
-
-  // Page seule : l'onglet du navigateur montre l'état et le sujet, un onglet par sujet
-  useEffect(() => {
-    if (standalone) document.title = `${running ? MARK.running : MARK.paused} ${name}`
-  }, [standalone, running, name])
+  const now = useFrameTimestamp(running)
+  // L'horloge peut retarder d'une image sur un départ tout juste donné
+  const elapsed = stacked + (running ? Math.max(0, now - startedAt) : 0)
 
   const toggle = () => {
     const at = Date.now()
@@ -41,13 +27,11 @@ const Chrono = ({ standalone }: ToolProps) => {
     } else {
       setStartedAt(at)
     }
-    setNow(at)
   }
 
   const reset = () => {
     setStacked(0)
     setStartedAt(running ? Date.now() : null)
-    setNow(Date.now())
   }
 
   const hours = Math.floor(elapsed / 3_600_000)
@@ -59,6 +43,8 @@ const Chrono = ({ standalone }: ToolProps) => {
 
   return (
     <div className="app chrono">
+      {/* Page seule : l'onglet du navigateur montre l'état et le sujet, un onglet par sujet */}
+      {standalone && <title>{`${running ? MARK.running : MARK.paused} ${name}`}</title>}
       <p className="time" role="timer">
         {hours}h {pad(minutes)}m {pad(seconds)}s<span className="hundredths"> {pad(hundredths)}</span>
       </p>

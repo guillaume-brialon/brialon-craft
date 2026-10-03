@@ -23,8 +23,10 @@ const TYPES: Record<string, string> = {
   '.svg': 'image/svg+xml',
 }
 
-// En développement, /assets/* (site.css, polices, site.js, dictionnaire) est servi depuis le site voisin ;
-// au build, ces liens restent tels quels et pointent vers le site en ligne
+/**
+ * En développement, /assets/* (site.css, polices, site.js, dictionnaire) est servi depuis le site voisin ;
+ * au build, ces liens restent tels quels et pointent vers le site en ligne
+ */
 const siteAssets = (): Plugin => {
   return {
     name: 'site-assets',

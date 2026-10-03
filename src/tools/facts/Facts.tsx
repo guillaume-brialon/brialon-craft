@@ -10,7 +10,7 @@ const generate = (node: FactNode): string => {
   return generate(node.alt[Math.floor(Math.random() * node.alt.length)])
 }
 
-// Ponctuation collée au mot précédent, à l'anglaise
+/** Fait tiré au hasard, ponctuation collée au mot précédent, à l'anglaise */
 const fact = () => generate(FACTS).replace(/ \?/g, '?')
 
 const Facts = (_: ToolProps) => {

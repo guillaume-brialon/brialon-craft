@@ -36,7 +36,7 @@ const INCOME_MIN = Math.log(200)
 const INCOME_MAX = Math.log(50_000)
 const START_INCOME = 3000
 
-// Arrondi selon l'ordre de grandeur : des montants ronds et des pas réguliers en proportion
+/** Arrondi selon l'ordre de grandeur : des montants ronds et des pas réguliers en proportion */
 const roundIncome = (value: number) => {
   const step = value < 1000 ? 10 : value < 5000 ? 50 : value < 10_000 ? 100 : 1000
   return Math.round(value / step) * step
@@ -48,7 +48,7 @@ const positionOf = (income: number) => {
   return Math.min(SLIDER_MAX, Math.max(0, Math.round(position)))
 }
 
-// Échelle de l'OCDE modifiée (Insee) : 1 pour le premier adulte, 0,5 par personne de 14 ans ou plus, 0,3 par enfant
+/** Échelle de l'OCDE modifiée (Insee) : 1 pour le premier adulte, 0,5 par personne de 14 ans ou plus, 0,3 par enfant */
 const consumptionUnits = (adults: number, children: number) => 1 + 0.5 * (adults - 1) + 0.3 * children
 
 // Au-delà de 20 pastilles, le reste est indiqué en nombre
@@ -65,7 +65,7 @@ interface StepperProps {
   more: string
 }
 
-// Compteur borné, réglé par − et +
+/** Compteur borné, réglé par − et + */
 const Stepper = ({ id, label, value, min, max, onChange, less, more }: StepperProps) => (
   <div className="field">
     <span className="stepper-label" id={id}>{label}</span>
