@@ -14,6 +14,7 @@ seul à sa propre adresse.
 | Chronomètre | `src/tools/chrono` | [brialon.com/chrono](https://brialon.com/chrono) |
 | Revenu éco-compatible | `src/tools/footprint` | [brialon.com/footprint](https://brialon.com/footprint) |
 | Lecture cryptée | `src/tools/scrambler` | [brialon.com/scrambler](https://brialon.com/scrambler) |
+| Aide au Quordle | `src/tools/quordle` | [brialon.com/quordle](https://brialon.com/quordle) |
 | Anecdotes xkcd | `src/tools/facts` | [brialon.com/facts](https://brialon.com/facts) |
 | Détecteur d'arrière-plan | `src/tools/detector` | [brialon.com/detector](https://brialon.com/detector) |
 
@@ -40,10 +41,15 @@ Le site les garde stables : chaque fichier concerné commence par son contrat av
 | `css/site.css` | page Artisanat | en-tête, pied de page, mise en page (`.wrap`, `.label`, `.section-head`) |
 | `js/site.js` | page Artisanat | bouton de thème, hauteur de l'en-tête (`--header-h`), coordonnées |
 | `img/favicon.png` | page Artisanat et outils sans icône propre | icône d'onglet |
+| `data/words-fr-5.json` | Aide au Quordle | dictionnaire des mots de cinq lettres |
 
 Les outils n'utilisent aucune classe de `site.css` : leurs pages seules ne chargent que
 `tokens.css` et `fonts.css`. Sans le site (clone isolé), ils fonctionnent sans ses couleurs
 ni ses polices.
+
+Le dictionnaire de l'aide au Quordle n'est pas dans ce dépôt : la liste de mots n'est pas
+sous licence libre, elle ne peut donc pas être distribuée ici sous licence MIT. Sans le site,
+l'outil indique que le dictionnaire est indisponible.
 
 ## Développement
 
