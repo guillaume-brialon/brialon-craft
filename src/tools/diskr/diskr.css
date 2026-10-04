@@ -1,0 +1,126 @@
+/* La surface suit la taille du cadre ; en page seule, elle prend tout l'écran et non une largeur de téléphone */
+#root > .app.diskr { max-width: none; }
+/* Fond propre à l'outil : quand son thème est forcé (attribut data-theme), il ne laisse pas voir celui de la page */
+.diskr { position: relative; height: 100%; padding: max(10px, 3cqmin); background: var(--ground); }
+.diskr .stage { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: max(8px, 2.5cqmin); }
+
+.diskr .bar { display: flex; align-items: center; justify-content: space-between; gap: 1em; }
+.diskr .count { font-family: var(--mono); font-size: 0.85em; color: var(--muted); font-variant-numeric: tabular-nums; }
+.diskr .button { gap: 0.5em; padding: 0.45em 0.9em; }
+.diskr .tools { display: flex; gap: 0.5em; }
+.diskr .tools svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+/* Cadre étroit : le bouton « Plein écran » se réduit à son icône */
+@container (max-width: 340px) {
+  .diskr .tools span { display: none; }
+  .diskr .tools .button { padding-inline: 0.7em; }
+}
+
+.diskr .surface {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+/* Plein écran : rien que les disques, les bords du cadre sont ceux de l'écran */
+.diskr .surface:fullscreen { border: 0; border-radius: 0; }
+.diskr .surface svg { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+
+/* Bleus du site : les disques suivent le thème clair ou sombre */
+.diskr .tone-0 { fill: var(--brand); }
+.diskr .tone-1 { fill: var(--brand-deep); }
+.diskr .tone-2 { fill: var(--brand-soft); }
+.diskr .tone-3 { fill: var(--line-strong); }
+
+/* Modale des paramètres, contenue dans l'outil : elle ne déborde pas du cadre de la page Artisanat */
+.diskr .veil {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: max(10px, 3cqmin);
+  background: color-mix(in srgb, var(--ground) 70%, transparent);
+}
+.diskr .dialog {
+  width: min(100%, 24em);
+  max-height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75em;
+  padding: 1.1em;
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  box-shadow: 0 16px 36px -18px rgba(0, 50, 97, .55);
+}
+/* Dans un cadre trop bas, la modale défile au lieu d'écraser ses lignes */
+.diskr .dialog > * { flex: none; }
+.diskr .dialog:focus { outline: none; }
+.diskr .title { font-family: var(--display); font-weight: 600; font-size: 1.2em; line-height: 1.2; color: var(--brand-deep); }
+.diskr .range { display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: 0 0.6em; }
+.diskr .name { font-weight: 500; }
+.diskr .range output { font-family: var(--mono); font-size: 0.85em; color: var(--muted); font-variant-numeric: tabular-nums; }
+/* Curseurs du minimum et du maximum : deux champs superposés sur la même piste. Seuls leurs boutons reçoivent
+   le pointeur, sinon le champ du dessus masquerait l'autre ; la piste et sa partie colorée sont dessinées dessous. */
+.diskr .slider { --thumb: 1.2em; position: relative; grid-column: 1 / -1; height: 1.7em; }
+.diskr .slider::before, .diskr .slider::after {
+  content: "";
+  position: absolute;
+  top: calc(50% - 2px);
+  height: 4px;
+  border-radius: 2px;
+}
+.diskr .slider::before { left: 0; right: 0; background: var(--line-strong); }
+.diskr .slider::after {
+  left: calc(var(--from) * (100% - var(--thumb)) + var(--thumb) / 2);
+  right: calc((1 - var(--to)) * (100% - var(--thumb)) + var(--thumb) / 2);
+  background: var(--brand);
+}
+/* font : sans lui, le champ garde la taille de texte du navigateur et son bouton n'a pas la largeur --thumb de la piste */
+.diskr .slider input {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  font: inherit;
+  -webkit-appearance: none;
+  appearance: none;
+  background: none;
+  pointer-events: none;
+}
+.diskr .slider input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: var(--thumb);
+  height: var(--thumb);
+  border: 2px solid var(--surface);
+  border-radius: 50%;
+  background: var(--brand);
+  cursor: pointer;
+  pointer-events: auto;
+}
+.diskr .slider input::-moz-range-thumb {
+  box-sizing: border-box;
+  width: var(--thumb);
+  height: var(--thumb);
+  border: 2px solid var(--surface);
+  border-radius: 50%;
+  background: var(--brand);
+  cursor: pointer;
+  pointer-events: auto;
+}
+.diskr .slider input::-moz-range-track { background: none; }
+.diskr .slider .front { z-index: 2; }
+/* Le contour du focus entoure le bouton, pas le champ qui couvre toute la ligne */
+.diskr .slider input:focus-visible { outline: none; }
+.diskr .slider input:focus-visible::-webkit-slider-thumb { outline: 2px solid var(--focus); outline-offset: 2px; }
+.diskr .slider input:focus-visible::-moz-range-thumb { outline: 2px solid var(--focus); outline-offset: 2px; }
+.diskr .option { display: flex; align-items: center; gap: 0.6em; cursor: pointer; }
+.diskr .option input { flex: none; width: 1.1em; height: 1.1em; margin: 0; accent-color: var(--brand); }
+.diskr .choice { display: flex; align-items: center; justify-content: space-between; gap: 0.6em; }
+.diskr .buttons { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0.5em; padding-top: 0.3em; }
+.diskr .reset { margin-right: auto; }

@@ -17,6 +17,7 @@ seul à sa propre adresse.
 | Lecture cryptée | `src/tools/scrambler` | [brialon.com/scrambler](https://brialon.com/scrambler) |
 | Anecdotes xkcd | `src/tools/facts` | [brialon.com/facts](https://brialon.com/facts) |
 | Détecteur d'arrière-plan | `src/tools/detector` | [brialon.com/detector](https://brialon.com/detector) |
+| Diskr | `src/tools/diskr` | [brialon.com/diskr](https://brialon.com/diskr) |
 
 ## Organisation
 

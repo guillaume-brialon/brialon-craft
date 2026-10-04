@@ -11,7 +11,7 @@ const SITE = resolve(ROOT, process.env.SITE_DIR ?? '../brialon.com/www')
 const SITE_ASSETS = resolve(SITE, 'assets')
 
 // Un outil = un dossier de src/tools/ et une page seule du même nom
-const TOOLS = ['countdown', 'quordle', 'chrono', 'coffee', 'footprint', 'scrambler', 'facts', 'detector']
+const TOOLS = ['countdown', 'quordle', 'chrono', 'coffee', 'footprint', 'scrambler', 'facts', 'detector', 'diskr']
 
 const TYPES: Record<string, string> = {
   '.css': 'text/css',

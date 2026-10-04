@@ -100,6 +100,15 @@ export const TOOLS: Tool[] = [
     path: '/detector',
     Component: lazy(() => import('./detector/Detector.tsx')),
   },
+  {
+    id: 'diskr',
+    label: 'Animation',
+    title: 'Diskr',
+    description: 'Des disques bleus remplissent l\'écran sans se chevaucher, puis dérivent et rebondissent les uns sur les autres. Réglez leur taille et leur vitesse.',
+    orientation: 'portrait',
+    path: '/diskr',
+    Component: lazy(() => import('./diskr/Diskr.tsx')),
+  },
 ]
 
 export const toolById = (id: string | undefined): Tool | undefined => {
