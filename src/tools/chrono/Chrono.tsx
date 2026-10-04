@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { toolById, type ToolProps } from '../registry.ts'
 import { useFrameTimestamp } from '../../shared/clock.ts'
 import { formatNumber, plural } from '../../shared/format.ts'
-import '../../shared/app.css'
 import './chrono.css'
 
 const MARK = { running: '▶', paused: '❚❚' }

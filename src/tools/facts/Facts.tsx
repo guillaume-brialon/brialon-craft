@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import type { ToolProps } from '../registry.ts'
 import { FACTS, type FactNode } from './facts-data.ts'
-import '../../shared/app.css'
 import './facts.css'
 
 const generate = (node: FactNode): string => {

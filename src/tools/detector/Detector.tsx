@@ -1,6 +1,5 @@
 import { useState, useSyncExternalStore } from 'react'
 import type { ToolProps } from '../registry.ts'
-import '../../shared/app.css'
 import './detector.css'
 
 // Une minuterie de 100 ms qui arrive avec plus du double de retard trahit une mise en veille

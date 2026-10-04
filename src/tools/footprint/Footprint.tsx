@@ -2,7 +2,6 @@ import { useState } from 'react'
 import type { ToolProps } from '../registry.ts'
 import { formatNumber, formatWithUnit } from '../../shared/format.ts'
 import Stepper from './Stepper.tsx'
-import '../../shared/app.css'
 import './footprint.css'
 
 // Données de 2022, dernière année mesurée par le Global Footprint Network (édition 2026) ; revenus Insee (ERFS 2022)

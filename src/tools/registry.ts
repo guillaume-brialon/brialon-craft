@@ -1,4 +1,7 @@
 import { lazy, type ComponentType, type LazyExoticComponent } from 'react'
+// Base commune des outils, importée ici et non par chaque outil : chargée avec la page, elle précède toujours
+// la feuille d'un outil, chargée à son ouverture, qui peut ainsi la préciser à spécificité égale
+import '../shared/app.css'
 
 /** Propriétés communes à tous les outils */
 export interface ToolProps {

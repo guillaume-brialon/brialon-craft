@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import type { ToolProps } from '../registry.ts'
-import '../../shared/app.css'
 import './coffee.css'
 
 const DRINKS = [

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { ToolProps } from '../registry.ts'
 import { usePeriodicTimestamp } from '../../shared/clock.ts'
-import '../../shared/app.css'
 import './countdown.css'
 
 const DEFAULT_MINUTES = 15

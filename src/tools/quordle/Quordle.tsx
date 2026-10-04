@@ -2,7 +2,6 @@ import { use, useCallback, useDeferredValue, useMemo, useRef, useState, type Cha
 import type { ToolProps } from '../registry.ts'
 import { formatNumber, plural } from '../../shared/format.ts'
 import WordList from './WordList.tsx'
-import '../../shared/app.css'
 import './quordle.css'
 
 // Dictionnaire servi par le site : il n'est pas dans ce dépôt (voir le README)

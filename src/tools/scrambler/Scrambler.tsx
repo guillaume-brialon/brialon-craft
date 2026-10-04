@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react'
 import type { ToolProps } from '../registry.ts'
-import '../../shared/app.css'
 
 const INITIAL_TEXT = 'Êtes-vous capable de lire ce texte même avec les lettres en désordre ? Essayez votre propre phrase.'
 const WORD = /[\p{L}\p{N}]+/gu
