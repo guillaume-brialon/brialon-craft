@@ -109,6 +109,15 @@ export const TOOLS: Tool[] = [
     path: '/diskr',
     Component: lazy(() => import('./diskr/Diskr.tsx')),
   },
+  {
+    id: 'declination',
+    label: 'Astronomie',
+    title: 'Déclinaison solaire',
+    description: 'La course du soleil entre les tropiques sur un an : situez le jour entre solstices et équinoxes, voyez le prochain et faites défiler l\'année.',
+    orientation: 'portrait',
+    path: '/declination',
+    Component: lazy(() => import('./declination/Declination.tsx')),
+  },
 ]
 
 export const toolById = (id: string | undefined): Tool | undefined => {

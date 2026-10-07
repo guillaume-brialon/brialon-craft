@@ -18,6 +18,7 @@ seul à sa propre adresse.
 | Anecdotes xkcd | `src/tools/facts` | [brialon.com/facts](https://brialon.com/facts) |
 | Détecteur d'arrière-plan | `src/tools/detector` | [brialon.com/detector](https://brialon.com/detector) |
 | Diskr | `src/tools/diskr` | [brialon.com/diskr](https://brialon.com/diskr) |
+| Déclinaison solaire | `src/tools/declination` | [brialon.com/declination](https://brialon.com/declination) |
 
 ## Organisation
 

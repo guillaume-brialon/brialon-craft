@@ -1,0 +1,58 @@
+.declination .heading { display: grid; gap: 0.5em; font-variant-numeric: tabular-nums; }
+.declination .title {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.7em;
+  line-height: 1.15;
+  color: var(--brand-deep);
+}
+/* Jauge : son titre et sa valeur sur une ligne, la barre dessous, remplie depuis le milieu */
+.declination .gauge {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.35em 1em;
+  align-items: baseline;
+  font-family: var(--mono);
+  font-size: 0.85em;
+}
+.declination .gauge-label { font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--brand-soft); }
+/* « gauge-value » et non « value » : la page Artisanat charge site.css, qui a déjà une classe de ce nom */
+.declination .gauge-value { font-weight: 600; white-space: nowrap; }
+.declination .gauge .track {
+  grid-column: 1 / -1;
+  height: 0.75em;
+  background: var(--brand-wash);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  overflow: hidden;
+  position: relative;
+}
+.declination .gauge .fill { position: absolute; top: 0; bottom: 0; background: var(--brand); }
+/* Repère du zéro, au milieu */
+.declination .gauge .track::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(50% - 1px);
+  width: 2px;
+  background: var(--brand-deep);
+}
+.declination .chart {
+  display: block;
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.declination .equator { stroke: var(--line-strong); stroke-dasharray: 3 4; }
+.declination path { fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.declination .past { stroke: var(--line-strong); }
+.declination .future { stroke: var(--brand); }
+/* Équinoxes et solstices, datés ; le prochain ressort */
+.declination .milestone circle { fill: var(--surface); stroke: var(--brand-soft); stroke-width: 2; }
+.declination .milestone text { font-family: var(--mono); font-size: 11px; fill: var(--muted); }
+.declination .milestone.next circle { fill: var(--brand); stroke: var(--brand); }
+.declination .milestone.next text { fill: var(--ink); font-weight: 600; }
+.declination .day { fill: var(--brand-deep); stroke: var(--surface); stroke-width: 2.5; }
+.declination .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6em; }
