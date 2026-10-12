@@ -122,7 +122,7 @@ export const TOOLS: Tool[] = [
     id: 'piet',
     label: 'Animation',
     title: 'Mondrian infini',
-    description: 'Un zoom sans fin vers le carré central d\'un tableau à la Mondrian, où apparaît chaque fois une nouvelle composition tirée au hasard.',
+    description: 'Un zoom sans fin vers le centre d\'un tableau à la Mondrian, où se trace chaque fois une nouvelle composition tirée au hasard.',
     orientation: 'portrait',
     path: '/piet',
     Component: lazy(() => import('./piet/Piet.tsx')),

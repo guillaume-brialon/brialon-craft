@@ -1,30 +1,39 @@
-import { BLACK, createPainting, LINE, RATIO, WHITE, type Cell, type Painting } from './painting.ts'
+import { BLACK, createPainting, RATIO, WHITE, type Cell, type Painting } from './painting.ts'
 
 // Durée d'un doublement de taille, en millisecondes
-const DOUBLING_MS = 3000
+const DOUBLING_MS = 6000
 // Au retour d'un onglet en arrière-plan, le temps écoulé est plafonné pour éviter un saut
 const MAX_STEP_MS = 100
-// Côté, en pixels du canevas, à partir duquel un carré central reçoit son tableau
-const MIN_CORE_PX = 2
+// Taille, en proportion du canevas, à laquelle un tableau apparaît dans le rectangle central du précédent : celui-ci
+// remplit alors tout juste le canevas, si bien qu'on ne voit que deux tableaux à la fois
+const BIRTH = RATIO
+// Durée du tracé des traits d'un nouveau tableau, puis de la pose de ses couleurs, en millisecondes de zoom
+const TRACE_MS = 750
+const COLOR_MS = 300
+// Durée du fondu d'une couleur
+const FADE_MS = 100
+// Épaisseur des traits, en proportion du petit côté du canevas : la même pour tous les tableaux, quel que soit le zoom
+const LINE = 0.012
 
 type Stop = () => void
 
-/**
- * Vrai tant qu'un rectangle, traits compris, touche le carré de demi-côté `reach` centré sur l'origine. Le zoom ne
- * faisant que grossir les tableaux, un rectangle sorti de ce carré n'y revient jamais.
- */
-const inView = (cell: Cell, reach: number): boolean => {
-  const margin = LINE / 2
-  return cell.x - margin < reach && cell.x + cell.width + margin > -reach
-    && cell.y - margin < reach && cell.y + cell.height + margin > -reach
+/** Âge d'un tableau de taille `scale` : le temps de zoom écoulé depuis son apparition, en millisecondes */
+const ageAt = (scale: number): number => DOUBLING_MS * Math.log2(scale / BIRTH)
+
+/** Vrai si le rectangle donné par ses bords touche le carré de demi-côté `reach` centré sur l'origine */
+const touches = (left: number, top: number, right: number, bottom: number, reach: number): boolean => {
+  return left < reach && right > -reach && top < reach && bottom > -reach
 }
+
+/** Valeur ramenée entre 0 et 1 */
+const clamp = (value: number) => Math.min(1, Math.max(0, value))
 
 /** Zoom sans fin vers le centre de tableaux emboîtés, dessiné sur un canevas tant qu'il n'est pas en pause */
 export const createZoom = () => {
-  // Du plus grand tableau au plus petit : chacun occupe le carré central du précédent
+  // Du plus grand tableau au plus petit : chacun occupe le rectangle central du précédent
   const paintings: Painting[] = [createPainting()]
-  // Côté du plus grand tableau, en proportion du grand côté de la surface ; au départ, son bord est juste hors champ
-  let span = 1 + LINE
+  // Taille du plus grand tableau, en proportion du canevas : à 1, il le remplit tout juste
+  let span = 1
   let canvas: HTMLCanvasElement | undefined
   let running = !matchMedia('(prefers-reduced-motion: reduce)').matches
   let frame = 0
@@ -33,58 +42,89 @@ export const createZoom = () => {
 
   const publish = () => listeners.forEach(notify => notify())
 
-  // Accorde les tableaux au zoom, pour une surface dont le grand côté fait `unit` pixels
-  const settle = (unit: number) => {
-    // Un carré central devient visible : un nouveau tableau y apparaît
-    for (let core = span * RATIO ** paintings.length * unit; core >= MIN_CORE_PX; core *= RATIO) {
-      paintings.push(createPainting())
-    }
-    // Le champ est le carré qui contient la surface : ce qui en sort ne reviendrait pas, même si elle changeait de
-    // forme (plein écran, téléphone tourné). Seuls les tableaux plus grands que lui peuvent en dépasser.
-    for (let index = 0, side = span; index < paintings.length && side > 1; index++, side *= RATIO) {
-      const reach = 0.5 / side
-      if (!paintings[index].every(cell => inView(cell, reach))) {
-        paintings[index] = paintings[index].filter(cell => inView(cell, reach))
-      }
-    }
-    // Un tableau sans rectangle a disparu en entier : le suivant devient le plus grand
-    while (paintings.length > 1 && paintings[0].length === 0) {
+  // Accorde les tableaux au zoom : en ajoute un au centre, supprime ce qui ne se verra plus
+  const settle = () => {
+    while (span * RATIO ** paintings.length >= BIRTH) paintings.push(createPainting())
+    paintings.forEach((painting, index) => {
+      const scale = span * RATIO ** index
+      // Un tableau achevé recouvre pour de bon le rectangle central du précédent
+      if (index > 0 && ageAt(scale) >= TRACE_MS + COLOR_MS) paintings[index - 1].core = undefined
+      // Seul un tableau plus grand que le canevas peut en dépasser
+      if (scale <= 1) return
+      // Le champ est le canevas, de demi-côté `reach` dans le repère du tableau, quelles que soient ses proportions.
+      // Le zoom ne faisant que grossir les tableaux, ce qui en sort n'y revient jamais.
+      const reach = 0.5 / scale
+      painting.cells = painting.cells.filter(cell => {
+        return touches(cell.x, cell.y, cell.x + cell.width, cell.y + cell.height, reach)
+      })
+      // Un trait dépasse de sa ligne d'une demi-épaisseur, soit au plus LINE fois le demi-côté du champ
+      painting.lines = painting.lines.filter(line => {
+        return touches(Math.min(line.x1, line.x2), Math.min(line.y1, line.y2), Math.max(line.x1, line.x2),
+          Math.max(line.y1, line.y2), reach * (1 + LINE))
+      })
+    })
+    // Un tableau vide a disparu en entier : le suivant devient le plus grand
+    while (paintings.length > 1 && !paintings[0].core && paintings[0].cells.length + paintings[0].lines.length === 0) {
       paintings.shift()
       span *= RATIO
     }
   }
 
-  const draw = (target: HTMLCanvasElement, unit: number) => {
+  const draw = (target: HTMLCanvasElement) => {
     const context = target.getContext('2d')
     if (!context) return
     const { width, height } = target
-    context.resetTransform()
-    // Fond du dernier carré central, encore vide
     context.fillStyle = WHITE
     context.fillRect(0, 0, width, height)
-    context.strokeStyle = BLACK
-    context.lineWidth = LINE
-    // Du plus petit tableau au plus grand : les traits d'un tableau recouvrent le bord de celui qu'il contient
-    for (let index = paintings.length - 1; index >= 0; index--) {
-      const side = span * RATIO ** index * unit
-      context.setTransform(side, 0, 0, side, width / 2, height / 2)
-      context.beginPath()
-      for (const cell of paintings[index]) {
+    // Couleurs, du plus grand tableau au plus petit : chacun recouvre peu à peu le rectangle central du précédent
+    paintings.forEach((painting, index) => {
+      const scale = span * RATIO ** index
+      // Temps écoulé depuis la fin du tracé, quand les couleurs commencent à se poser
+      const since = ageAt(scale) - TRACE_MS
+      const fill = (cell: Cell) => {
+        const opacity = clamp((since - cell.delay * (COLOR_MS - FADE_MS)) / FADE_MS)
+        if (opacity === 0) return
+        context.globalAlpha = opacity
         context.fillStyle = cell.color
-        context.fillRect(cell.x, cell.y, cell.width, cell.height)
-        context.rect(cell.x, cell.y, cell.width, cell.height)
+        context.fillRect(width * (0.5 + cell.x * scale), height * (0.5 + cell.y * scale),
+          width * cell.width * scale, height * cell.height * scale)
       }
-      context.stroke()
+      painting.cells.forEach(fill)
+      if (painting.core) fill(painting.core)
+    })
+    context.globalAlpha = 1
+    // Traits, par-dessus toutes les couleurs : un tableau borde ainsi celui qu'il contient
+    context.beginPath()
+    paintings.forEach((painting, index) => {
+      const scale = span * RATIO ** index
+      // Rangs de traits déjà tracés ; le dernier ne l'est qu'en partie
+      const traced = ageAt(scale) / TRACE_MS * painting.ranks
+      for (const line of painting.lines) {
+        const progress = clamp(traced - line.rank)
+        if (progress === 0) continue
+        context.moveTo(width * (0.5 + line.x1 * scale), height * (0.5 + line.y1 * scale))
+        context.lineTo(width * (0.5 + (line.x1 + (line.x2 - line.x1) * progress) * scale),
+          height * (0.5 + (line.y1 + (line.y2 - line.y1) * progress) * scale))
+      }
+    })
+    const thickness = Math.max(1, LINE * Math.min(width, height))
+    context.strokeStyle = BLACK
+    context.lineWidth = thickness
+    context.stroke()
+    // Cadre noir de l'épaisseur des traits, dont la moitié extérieure tombe hors du canevas ; en plein écran,
+    // les bords de l'écran en tiennent lieu
+    if (!document.fullscreenElement) {
+      context.lineWidth = 2 * thickness
+      context.strokeRect(0, 0, width, height)
     }
   }
 
   // Avance le zoom de `elapsedMs` et redessine ; sans surface à remplir, rien ne bouge
   const render = (elapsedMs: number) => {
-    const unit = canvas ? Math.max(canvas.width, canvas.height) : 0
-    if (!canvas || unit === 0) return
+    if (!canvas || canvas.width === 0 || canvas.height === 0) return
     span *= 2 ** (elapsedMs / DOUBLING_MS)
-    settle(unit)
-    draw(canvas, unit)
+    settle()
+    draw(canvas)
   }
 
   const loop = (now: number) => {
@@ -104,7 +144,8 @@ export const createZoom = () => {
       return () => listeners.delete(notify)
     },
     isRunning: () => running,
-    // Dessine sur le canevas (fonction `ref` de React) et suit sa taille, dans le cadre comme en plein écran
+    // Dessine sur le canevas (fonction `ref` de React) et suit sa taille, dans le cadre comme en plein écran :
+    // les tableaux prennent ses proportions
     attach: (element: HTMLCanvasElement | null): Stop | undefined => {
       if (!element) return
       canvas = element

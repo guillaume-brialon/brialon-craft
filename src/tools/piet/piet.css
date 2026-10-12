@@ -12,16 +12,7 @@
   .piet .tools .button { padding-inline: 0.7em; }
 }
 
-/* Le tableau garde son fond blanc dans les deux thèmes, comme une image */
-.piet .surface {
-  position: relative;
-  flex: 1;
-  min-height: 0;
-  overflow: hidden;
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius);
-  background: #ffffff;
-}
-/* Plein écran : rien que le tableau, les bords du cadre sont ceux de l'écran */
-.piet .surface:fullscreen { border: 0; border-radius: 0; }
+/* Le tableau garde son fond blanc dans les deux thèmes, comme une image ; son cadre noir est dessiné sur le canevas,
+   à l'épaisseur de ses traits */
+.piet .surface { position: relative; flex: 1; min-height: 0; overflow: hidden; background: #ffffff; }
 .piet .surface canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
