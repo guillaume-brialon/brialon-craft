@@ -118,6 +118,15 @@ export const TOOLS: Tool[] = [
     path: '/declination',
     Component: lazy(() => import('./declination/Declination.tsx')),
   },
+  {
+    id: 'piet',
+    label: 'Animation',
+    title: 'Mondrian infini',
+    description: 'Un zoom sans fin vers le carré central d\'un tableau à la Mondrian, où apparaît chaque fois une nouvelle composition tirée au hasard.',
+    orientation: 'portrait',
+    path: '/piet',
+    Component: lazy(() => import('./piet/Piet.tsx')),
+  },
 ]
 
 export const toolById = (id: string | undefined): Tool | undefined => {

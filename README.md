@@ -19,6 +19,7 @@ seul à sa propre adresse.
 | Détecteur d'arrière-plan | `src/tools/detector` | [brialon.com/detector](https://brialon.com/detector) |
 | Diskr | `src/tools/diskr` | [brialon.com/diskr](https://brialon.com/diskr) |
 | Déclinaison solaire | `src/tools/declination` | [brialon.com/declination](https://brialon.com/declination) |
+| Mondrian infini | `src/tools/piet` | [brialon.com/piet](https://brialon.com/piet) |
 
 ## Organisation
 
