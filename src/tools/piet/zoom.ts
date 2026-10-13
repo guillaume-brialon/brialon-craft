@@ -1,4 +1,5 @@
-import { BLACK, createPainting, RATIO, WHITE, type Cell, type Painting } from './painting.ts'
+import { MOODS, PALETTES, type Mood } from './moods.ts'
+import { createPainting, RATIO, type Cell, type Painting } from './painting.ts'
 
 // Durée d'un doublement de taille, en millisecondes
 const DOUBLING_MS = 6000
@@ -34,6 +35,7 @@ export const createZoom = () => {
   const paintings: Painting[] = [createPainting()]
   // Taille du plus grand tableau, en proportion du canevas : à 1, il le remplit tout juste
   let span = 1
+  let mood = MOODS[0].value
   let canvas: HTMLCanvasElement | undefined
   let running = !matchMedia('(prefers-reduced-motion: reduce)').matches
   let frame = 0
@@ -74,7 +76,8 @@ export const createZoom = () => {
     const context = target.getContext('2d')
     if (!context) return
     const { width, height } = target
-    context.fillStyle = WHITE
+    const palette = PALETTES[mood]
+    context.fillStyle = palette.tones[0]
     context.fillRect(0, 0, width, height)
     // Couleurs, du plus grand tableau au plus petit : chacun recouvre peu à peu le rectangle central du précédent
     paintings.forEach((painting, index) => {
@@ -85,7 +88,7 @@ export const createZoom = () => {
         const opacity = clamp((since - cell.delay * (COLOR_MS - FADE_MS)) / FADE_MS)
         if (opacity === 0) return
         context.globalAlpha = opacity
-        context.fillStyle = cell.color
+        context.fillStyle = palette.tones[cell.tone]
         context.fillRect(width * (0.5 + cell.x * scale), height * (0.5 + cell.y * scale),
           width * cell.width * scale, height * cell.height * scale)
       }
@@ -108,11 +111,11 @@ export const createZoom = () => {
       }
     })
     const thickness = Math.max(1, LINE * Math.min(width, height))
-    context.strokeStyle = BLACK
+    context.strokeStyle = palette.line
     context.lineWidth = thickness
     context.stroke()
-    // Cadre noir de l'épaisseur des traits, dont la moitié extérieure tombe hors du canevas ; en plein écran,
-    // les bords de l'écran en tiennent lieu
+    // Cadre de la couleur et de l'épaisseur des traits, dont la moitié extérieure tombe hors du canevas ;
+    // en plein écran, les bords de l'écran en tiennent lieu
     if (!document.fullscreenElement) {
       context.lineWidth = 2 * thickness
       context.strokeRect(0, 0, width, height)
@@ -144,6 +147,13 @@ export const createZoom = () => {
       return () => listeners.delete(notify)
     },
     isRunning: () => running,
+    getMood: () => mood,
+    // Change les couleurs des tableaux déjà dessinés comme des suivants, même en pause
+    setMood: (next: Mood) => {
+      mood = next
+      render(0)
+      publish()
+    },
     // Dessine sur le canevas (fonction `ref` de React) et suit sa taille, dans le cadre comme en plein écran :
     // les tableaux prennent ses proportions
     attach: (element: HTMLCanvasElement | null): Stop | undefined => {

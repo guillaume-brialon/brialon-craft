@@ -1,11 +1,13 @@
 import { useRef, useState, useSyncExternalStore } from 'react'
 import type { ToolProps } from '../registry.ts'
+import { MOODS } from './moods.ts'
 import { createZoom } from './zoom.ts'
 import './piet.css'
 
 const Piet = (_: ToolProps) => {
   const [zoom] = useState(createZoom)
   const running = useSyncExternalStore(zoom.subscribe, zoom.isRunning)
+  const mood = useSyncExternalStore(zoom.subscribe, zoom.getMood)
   const surface = useRef<HTMLDivElement>(null)
 
   // On en sort par la touche Échap ou le geste du système ; un refus du navigateur laisse l'outil tel quel
@@ -16,6 +18,13 @@ const Piet = (_: ToolProps) => {
   return (
     <div className="app piet">
       <div className="bar">
+        <div className="segmented" role="group" aria-label="Couleurs">
+          {MOODS.map(({ value, label }) => (
+            <button key={value} type="button" aria-pressed={mood === value} onClick={() => zoom.setMood(value)}>
+              {label}
+            </button>
+          ))}
+        </div>
         <div className="tools">
           <button type="button" className="button ghost" aria-label={running ? 'Pause' : 'Reprendre'} onClick={zoom.toggle}>
             <svg viewBox="0 0 16 16" aria-hidden="true">

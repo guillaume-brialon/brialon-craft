@@ -19,12 +19,9 @@ const MAX_SIDE = 3
 // Aire, en cases, à laquelle est rapportée celle d'une zone pour donner sa probabilité d'être recoupée
 const SPLIT_AREA = 20
 
-export const WHITE = '#ffffff'
-// Couleur des traits
-export const BLACK = '#0a0a0a'
-// Couleurs vives, tirées à parts égales
-const COLORS = ['#ffd600', '#f5121d', '#0b35e6']
-// Part des rectangles d'un tableau qui reçoivent une couleur ; les autres restent blancs
+// Couleurs qu'un rectangle peut recevoir, tirées à parts égales ; leurs teintes dépendent de l'humeur (moods.ts)
+export const TONES = 3
+// Part des rectangles d'un tableau qui reçoivent une couleur ; les autres gardent celle du fond
 const COLOR_SHARE = 0.65
 
 /** Rectangle d'un tableau */
@@ -33,12 +30,13 @@ export interface Cell {
   y: number
   width: number
   height: number
-  color: string
+  /** Couleur dans la palette de l'humeur : 0 pour le fond, de 1 à TONES pour une couleur */
+  tone: number
   /** Moment où sa couleur se pose quand le tableau apparaît, de 0 (la première) à 1 (la dernière) */
   delay: number
 }
 
-/** Trait noir d'un tableau, tracé de son premier point vers le second quand le tableau apparaît */
+/** Trait d'un tableau, tracé de son premier point vers le second quand le tableau apparaît */
 export interface Line {
   x1: number
   y1: number
@@ -150,7 +148,7 @@ export const createPainting = (): Painting => {
       y: place(zone.top),
       width: (zone.right - zone.left) / GRID,
       height: (zone.bottom - zone.top) / GRID,
-      color: inColor ? COLORS[randomInt(0, COLORS.length - 1)] : WHITE,
+      tone: inColor ? randomInt(1, TONES) : 0,
       delay: Math.random(),
     }
   })
