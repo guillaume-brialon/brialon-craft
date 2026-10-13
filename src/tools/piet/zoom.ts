@@ -5,6 +5,9 @@ import { createPainting, RATIO, type Cell, type Painting } from './painting.ts'
 const DOUBLING_MS = 6000
 // Au retour d'un onglet en arrière-plan, le temps écoulé est plafonné pour éviter un saut
 const MAX_STEP_MS = 100
+// Part de l'écart entre le temps écoulé et le pas du zoom reprise à chaque image : après une image en retard,
+// le zoom ralentit un instant au lieu de sauter pour rattraper son retard
+const EASING = 0.1
 // Taille, en proportion du canevas, à laquelle un tableau apparaît dans le rectangle central du précédent : celui-ci
 // remplit alors tout juste le canevas, si bien qu'on ne voit que deux tableaux à la fois
 const BIRTH = RATIO
@@ -40,6 +43,8 @@ export const createZoom = () => {
   let running = !matchMedia('(prefers-reduced-motion: reduce)').matches
   let frame = 0
   let last = 0
+  // Pas du zoom, en millisecondes : le temps écoulé d'une image à l'autre, lissé
+  let pace = 0
   const listeners = new Set<() => void>()
 
   const publish = () => listeners.forEach(notify => notify())
@@ -132,11 +137,14 @@ export const createZoom = () => {
 
   const loop = (now: number) => {
     frame = requestAnimationFrame(loop)
-    render(Math.min(now - last, MAX_STEP_MS))
+    pace += (Math.min(now - last, MAX_STEP_MS) - pace) * EASING
     last = now
+    render(pace)
   }
 
+  // Le pas repart de zéro : le zoom prend son élan en quelques images
   const play = () => {
+    pace = 0
     last = performance.now()
     frame = requestAnimationFrame(loop)
   }
