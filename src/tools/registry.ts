@@ -1,4 +1,5 @@
 import { lazy, type ComponentType, type LazyExoticComponent } from 'react'
+import type { Category } from '../categories.ts'
 // Base commune des outils, importée ici et non par chaque outil : chargée avec la page, elle précède toujours
 // la feuille d'un outil, chargée à son ouverture, qui peut ainsi la préciser à spécificité égale
 import '../shared/app.css'
@@ -14,7 +15,8 @@ export type Orientation = 'portrait' | 'landscape'
 export interface Tool {
   /** Dossier dans src/tools/, page seule et ancre dans la page Artisanat */
   id: string
-  label: string
+  /** Section de la page Artisanat */
+  category: Category
   title: string
   description: string
   /** Portrait 9:16 ou paysage 16:9 dans le cadre */
@@ -26,11 +28,11 @@ export interface Tool {
 
 export const REPO_URL = 'https://github.com/guillaume-brialon/brialon-craft'
 
-// Ordre d'affichage dans la page Artisanat ; chaque outil n'est chargé qu'à l'ouverture
+// Ordre d'affichage dans chaque section de la page Artisanat ; chaque outil n'est chargé qu'à l'ouverture
 export const TOOLS: Tool[] = [
   {
     id: 'countdown',
-    label: 'Minuteur',
+    category: 'time',
     title: 'Décompte perpétuel',
     description: 'Le temps restant jusqu\'au prochain quart d\'heure, demi-heure ou heure pile, pour caler une pause ou une time-box.',
     orientation: 'portrait',
@@ -38,17 +40,8 @@ export const TOOLS: Tool[] = [
     Component: lazy(() => import('./countdown/Countdown.tsx')),
   },
   {
-    id: 'quordle',
-    label: 'Aide de jeu',
-    title: 'Aide au Quordle',
-    description: 'Retrouvez les mots de cinq lettres possibles d\'après les lettres déjà placées, celles à garder et celles à écarter.',
-    orientation: 'portrait',
-    path: '/quordle',
-    Component: lazy(() => import('./quordle/Quordle.tsx')),
-  },
-  {
     id: 'chrono',
-    label: 'Utilitaire',
+    category: 'time',
     title: 'Chronomètre',
     description: 'Comptabilisez le temps passé sur vos tâches : ouvrez un chronomètre par sujet, l\'onglet du navigateur montre s\'il tourne.',
     orientation: 'portrait',
@@ -56,26 +49,35 @@ export const TOOLS: Tool[] = [
     Component: lazy(() => import('./chrono/Chrono.tsx')),
   },
   {
-    id: 'coffee',
-    label: 'Utilitaire',
-    title: 'Commande de cafés',
-    description: 'Notez la commande de toute la tablée, boisson par boisson, puis remettez à zéro.',
+    id: 'declination',
+    category: 'time',
+    title: 'Déclinaison solaire',
+    description: 'La course du soleil entre les tropiques sur un an : situez le jour entre solstices et équinoxes, voyez le prochain et faites défiler l\'année.',
     orientation: 'portrait',
-    path: '/coffee',
-    Component: lazy(() => import('./coffee/Coffee.tsx')),
+    path: '/declination',
+    Component: lazy(() => import('./declination/Declination.tsx')),
   },
   {
-    id: 'footprint',
-    label: 'Calculateur',
-    title: 'Revenu éco-compatible',
-    description: 'Combien de planètes votre revenu vous permet-il de consommer ?',
+    id: 'detector',
+    category: 'time',
+    title: 'Détecteur d\'arrière-plan',
+    description: 'Détecte quand le navigateur met la page en veille, en mesurant le retard pris par ses minuteries.',
     orientation: 'portrait',
-    path: '/footprint',
-    Component: lazy(() => import('./footprint/Footprint.tsx')),
+    path: '/detector',
+    Component: lazy(() => import('./detector/Detector.tsx')),
+  },
+  {
+    id: 'quordle',
+    category: 'words',
+    title: 'Aide au Quordle',
+    description: 'Retrouvez les mots de cinq lettres possibles d\'après les lettres déjà placées, celles à garder et celles à écarter.',
+    orientation: 'portrait',
+    path: '/quordle',
+    Component: lazy(() => import('./quordle/Quordle.tsx')),
   },
   {
     id: 'scrambler',
-    label: 'Jeu de lecture',
+    category: 'words',
     title: 'Lecture cryptée',
     description: 'Vérifiez les capacités cognitives de votre cerveau sur un texte aux lettres mélangées.',
     orientation: 'portrait',
@@ -84,7 +86,7 @@ export const TOOLS: Tool[] = [
   },
   {
     id: 'facts',
-    label: 'Générateur',
+    category: 'words',
     title: 'Anecdotes xkcd',
     description: 'Générez un fait aléatoire (en anglais) d\'après un diagramme de xkcd.',
     orientation: 'portrait',
@@ -92,17 +94,26 @@ export const TOOLS: Tool[] = [
     Component: lazy(() => import('./facts/Facts.tsx')),
   },
   {
-    id: 'detector',
-    label: 'Expérience',
-    title: 'Détecteur d\'arrière-plan',
-    description: 'Détecte quand le navigateur met la page en veille, en mesurant le retard pris par ses minuteries.',
+    id: 'coffee',
+    category: 'practical',
+    title: 'Commande de cafés',
+    description: 'Notez la commande de toute la tablée, boisson par boisson, puis remettez à zéro.',
     orientation: 'portrait',
-    path: '/detector',
-    Component: lazy(() => import('./detector/Detector.tsx')),
+    path: '/coffee',
+    Component: lazy(() => import('./coffee/Coffee.tsx')),
+  },
+  {
+    id: 'footprint',
+    category: 'practical',
+    title: 'Revenu éco-compatible',
+    description: 'Combien de planètes votre revenu vous permet-il de consommer ?',
+    orientation: 'portrait',
+    path: '/footprint',
+    Component: lazy(() => import('./footprint/Footprint.tsx')),
   },
   {
     id: 'diskr',
-    label: 'Animation',
+    category: 'art',
     title: 'Diskr',
     description: 'Des disques bleus remplissent l\'écran sans se chevaucher, puis dérivent et rebondissent les uns sur les autres. Réglez leur taille et leur vitesse.',
     orientation: 'portrait',
@@ -110,17 +121,8 @@ export const TOOLS: Tool[] = [
     Component: lazy(() => import('./diskr/Diskr.tsx')),
   },
   {
-    id: 'declination',
-    label: 'Astronomie',
-    title: 'Déclinaison solaire',
-    description: 'La course du soleil entre les tropiques sur un an : situez le jour entre solstices et équinoxes, voyez le prochain et faites défiler l\'année.',
-    orientation: 'portrait',
-    path: '/declination',
-    Component: lazy(() => import('./declination/Declination.tsx')),
-  },
-  {
     id: 'piet',
-    label: 'Animation',
+    category: 'art',
     title: 'Mondrian infini',
     description: 'Un zoom sans fin vers le centre d\'un tableau à la Mondrian, où se trace chaque fois une nouvelle composition tirée au hasard. Aux bleus du site ou aux couleurs vives du peintre.',
     orientation: 'portrait',

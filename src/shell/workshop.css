@@ -3,49 +3,96 @@
 .workshop .section-head { margin-bottom: 28px; }
 .workshop h1 { font-size: var(--step-3); }
 
-/* Hauteur disponible pour le cadre : il tient en entier sous le titre de la page */
-.bench {
-  --room: calc(100svh - var(--header-h, 72px) - 230px);
+/* ---------- Catalogue : une section par catégorie ---------- */
+.catalogue { display: grid; gap: 40px; }
+.shelf h2 { display: flex; align-items: baseline; gap: 10px; font-size: var(--step-1); }
+.shelf h2 small { font: 500 0.75rem var(--mono); color: var(--brand-soft); letter-spacing: 0; }
+.shelf > p { margin: 4px 0 14px; color: var(--muted); max-width: 60ch; }
+.cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: grid;
-  grid-template-columns: 250px auto minmax(0, 1fr);
-  grid-template-areas: "list device info";
-  gap: 32px;
-  align-items: start;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 12px;
 }
-.bench[data-orientation="landscape"] {
-  grid-template-columns: 250px minmax(0, 1fr);
-  grid-template-areas: "list device" "list info";
-}
+.cards li { display: grid; }
 
-/* ---------- Liste des outils ---------- */
-.tool-list {
-  grid-area: list;
-  position: sticky;
-  top: calc(var(--header-h, 72px) + 16px);
-}
-.tool-list ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
-.tool-list a {
+/* Carte : le lien du titre la couvre en entier */
+.card {
+  position: relative;
   display: grid;
-  gap: 2px;
-  padding: 10px 14px;
+  align-content: start;
+  gap: 6px;
+  padding: 14px 16px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--surface);
+  transition: border-color .15s ease, transform .15s ease;
+}
+.card:hover { border-color: var(--brand-soft); transform: translateY(-2px); }
+.card:has(a:focus-visible) { outline: 2px solid var(--focus); outline-offset: 3px; }
+.card h3 { display: flex; align-items: center; gap: 8px; font-size: 1.05rem; color: var(--ink); }
+.card h3 img { border-radius: 4px; }
+.card h3 a { color: inherit; text-decoration: none; }
+.card h3 a:focus-visible { outline: none; }
+.card h3 a::after { content: ""; position: absolute; inset: 0; z-index: 1; border-radius: inherit; }
+.card p {
+  color: var(--muted);
+  font-size: var(--step--1);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Vignette : l'outil lui-même, inerte, ou une capture */
+.preview {
+  container-type: size;
+  position: relative;
+  height: 150px;
+  margin: -14px -16px 6px;
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+  border-radius: var(--radius) var(--radius) 0 0;
+  background: var(--ground);
+}
+.preview img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: left top; }
+.cards[data-category="art"] { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+.cards[data-category="art"] .preview { height: 180px; }
+
+/* ---------- Fenêtre d'un outil ---------- */
+html:has(.bench[open]) { overflow: hidden; }
+.bench {
+  width: fit-content;
+  max-width: min(1120px, 100vw - 32px);
+  max-height: calc(100svh - 32px);
+  padding: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: calc(var(--radius) * 2);
+  background: var(--ground);
   color: var(--ink);
-  text-decoration: none;
-  transition: border-color .15s ease, background-color .15s ease;
+  box-shadow: 0 40px 80px -30px rgba(0, 50, 97, .6);
+  overscroll-behavior: contain;
 }
-.tool-list a:hover { border-color: var(--brand-soft); }
-.tool-list a[aria-current="page"] {
-  border-color: var(--brand);
-  background: var(--brand-wash);
-  box-shadow: inset 3px 0 0 var(--brand);
+.bench::backdrop { background: rgba(0, 30, 60, .45); backdrop-filter: blur(3px); }
+.bench-body {
+  /* Hauteur disponible pour le cadre : il tient en entier dans la fenêtre */
+  --room: calc(100svh - 32px - 56px - 8px);
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(260px, 400px);
+  grid-template-areas: "device info";
+  gap: 32px;
+  align-items: start;
+  padding: 28px;
 }
-.tool-list .label { font-size: 0.7rem; color: var(--muted); }
-.tool-list strong { font-family: var(--display); font-weight: 600; }
+.bench .close { position: absolute; top: 16px; right: 16px; margin: 0; }
+.bench .close .button { padding: 7px 14px; }
 
 /* ---------- Cadre façon écran de téléphone ---------- */
-.device { grid-area: device; justify-self: center; display: grid; justify-items: center; }
+.device { grid-area: device; display: grid; justify-items: center; }
 .bezel {
   --bezel: var(--brand-deep);
   max-width: 100%;
@@ -65,16 +112,52 @@
   overscroll-behavior: contain;
   border-radius: 21px;
   background: var(--ground);
-  width: min(390px, var(--room) * 9 / 16);
+  width: min(390px, (var(--room) - 20px) * 9 / 16);
   aspect-ratio: 9 / 16;
 }
-.bench[data-orientation="landscape"] .device { justify-self: stretch; }
 .bench[data-orientation="landscape"] .screen {
-  width: min(720px, var(--room) * 16 / 9);
+  width: min(720px, (var(--room) - 20px) * 16 / 9);
   max-width: 100%;
   aspect-ratio: 16 / 9;
 }
 .loading { padding: 24px; color: var(--muted); }
+
+/* ---------- Cadre façon fenêtre de navigateur, pour les extensions ---------- */
+.browser {
+  margin: 0;
+  width: min(720px, (var(--room) - 40px) * 1.6);
+  max-width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: 0 30px 60px -30px rgba(0, 50, 97, .55);
+}
+.browser-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: var(--brand-wash);
+  border-bottom: 1px solid var(--line);
+}
+.browser-bar .dots { display: flex; gap: 5px; }
+.browser-bar .dots i { width: 9px; height: 9px; border-radius: 50%; background: var(--line-strong); }
+.browser-bar .url {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 3px 10px;
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  background: var(--surface);
+  font: 0.75rem var(--mono);
+  color: var(--muted);
+}
+.browser-bar img { border-radius: 4px; outline: 2px solid var(--brand-soft); outline-offset: 2px; }
+.browser > img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: left top; }
 
 /* ---------- Fiche de l'outil ---------- */
 .tool-info {
@@ -82,39 +165,57 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
-  padding-top: 8px;
+  padding-top: 44px;
 }
 .tool-info h2 { font-size: var(--step-2); }
 .tool-info p { color: var(--muted); }
 .tool-info .actions { display: flex; flex-wrap: wrap; gap: 10px; padding-top: 4px; }
 .tool-info .address { font-family: var(--mono); font-size: var(--step--1); }
+.tool-info .notes { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.tool-info .notes li {
+  padding: 3px 10px;
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: var(--step--1);
+}
 
 /* ---------- Réactivité ---------- */
-@media (max-width: 1000px) {
-  .bench, .bench[data-orientation="landscape"] {
-    grid-template-columns: auto minmax(0, 1fr);
-    grid-template-areas: "list list" "device info";
+/* Paysage, ou fenêtre étroite : la fiche passe sous le cadre */
+.bench[data-orientation="landscape"] .bench-body {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "device" "info";
+  --room: calc(100svh - 32px - 56px - 8px - 240px);
+}
+.bench[data-orientation="landscape"] .tool-info { padding-top: 0; }
+.bench[data-orientation="landscape"] .bench-body { padding-top: 64px; }
+@media (min-width: 1000px) and (min-height: 640px) {
+  /* Assez de place : la fiche d'une extension reste à droite de sa capture */
+  .bench[data-orientation="landscape"] .bench-body {
+    grid-template-columns: auto minmax(260px, 340px);
+    grid-template-areas: "device info";
+    --room: calc(100svh - 32px - 56px - 8px);
+    padding-top: 28px;
   }
-  .bench[data-orientation="landscape"] { grid-template-areas: "list list" "device device" "info info"; }
-  /* Liste en rangée défilante */
-  .tool-list { position: static; min-width: 0; }
-  .tool-list ul { display: flex; overflow-x: auto; padding-bottom: 6px; scrollbar-width: thin; }
-  .tool-list li { flex: none; }
-  .tool-list .label { display: none; }
-  .tool-list a { padding: 7px 12px; }
+  .bench[data-orientation="landscape"] .browser { width: min(720px, (var(--room) - 40px) * 1.6, 100vw - 32px - 56px - 32px - 340px); }
+  .bench[data-orientation="landscape"] .tool-info { padding-top: 44px; }
+}
+@media (max-width: 700px) {
+  .bench-body {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "device" "info";
+    gap: 20px;
+    padding: 64px 16px 20px;
+  }
+  .tool-info { padding-top: 0; }
 }
 @media (max-width: 640px) {
-  .bench, .bench[data-orientation="landscape"] {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: "list" "device" "info";
-    gap: 20px;
-  }
-  /* Sur téléphone, le cadre s'efface : l'outil prend toute la largeur */
-  .device { justify-self: stretch; justify-items: stretch; }
+  /* Sur téléphone, la fenêtre prend tout l'écran et le cadre s'efface : l'outil prend toute la largeur */
+  .bench { width: 100vw; max-width: 100vw; height: 100svh; max-height: 100svh; border: 0; border-radius: 0; }
+  .device { justify-items: stretch; }
   .bezel { padding: 0; border-radius: var(--radius); background: transparent; box-shadow: none; border: 1px solid var(--line-strong); }
-  .screen, .bench[data-orientation="landscape"] .screen {
-    width: 100%;
-    border-radius: var(--radius);
-  }
-  .screen { aspect-ratio: auto; height: calc(100svh - var(--header-h, 64px) - 120px); }
+  .screen, .bench[data-orientation="landscape"] .screen { width: 100%; border-radius: var(--radius); }
+  .screen { aspect-ratio: auto; height: calc(100svh - 160px); }
+  .browser { width: 100%; }
 }
