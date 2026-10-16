@@ -78,7 +78,7 @@ html:has(.bench[open]) { overflow: hidden; }
   max-width: min(1120px, 100vw - 32px);
   max-height: calc(100svh - 32px);
   padding: 0;
-  border: 1px solid var(--line-strong);
+  border: 2px solid var(--line-strong);
   border-radius: calc(var(--radius) * 2);
   background: var(--ground);
   color: var(--ink);
