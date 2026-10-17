@@ -112,6 +112,15 @@ export const TOOLS: Tool[] = [
     Component: lazy(() => import('./footprint/Footprint.tsx')),
   },
   {
+    id: 'festival',
+    category: 'figures',
+    title: 'Festival du film court',
+    description: 'Les films en compétition au Festival du film court en plein air de Grenoble depuis 2000 : nombre, durée, pays et réalisateurs les plus sélectionnés.',
+    orientation: 'portrait',
+    path: '/festival',
+    Component: lazy(() => import('./festival/Festival.tsx')),
+  },
+  {
     id: 'diskr',
     category: 'art',
     title: 'Diskr',

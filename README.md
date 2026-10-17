@@ -18,6 +18,7 @@ téléphone, et accessible seul à sa propre adresse.
 | Mots | Anecdotes xkcd | `src/tools/facts` | [brialon.com/facts](https://brialon.com/facts) |
 | Pratique | Commande de cafés | `src/tools/coffee` | [brialon.com/coffee](https://brialon.com/coffee) |
 | Pratique | Revenu éco-compatible | `src/tools/footprint` | [brialon.com/footprint](https://brialon.com/footprint) |
+| Chiffres | Festival du film court | `src/tools/festival` | [brialon.com/festival](https://brialon.com/festival) |
 | Art génératif | Diskr | `src/tools/diskr` | [brialon.com/diskr](https://brialon.com/diskr) |
 | Art génératif | Mondrian infini | `src/tools/piet` | [brialon.com/piet](https://brialon.com/piet) |
 
@@ -41,6 +42,10 @@ elle n'en montre qu'une capture, dans un cadre façon fenêtre de navigateur.
 Une carte s'ouvre par l'ancre de l'adresse (`/craft/#diskr`) ; l'art génératif y tourne
 en vignette. Les tailles des outils suivent leur conteneur (unités `cqmin`), si bien qu'un
 outil s'affiche de la même façon dans la vignette, dans le cadre et en page seule.
+
+Les films du festival (`src/tools/festival/films.json`) sont produits par
+`node scripts/festival.mjs <liste>`, à partir de la liste des films en compétition
+(tableau séparé par des tabulations), à relancer après chaque édition.
 
 ## Dépendances au site
 
