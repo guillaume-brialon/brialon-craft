@@ -1,6 +1,6 @@
 import FILMS from './films.json'
 
-/** Film en compétition, tel que l'écrit scripts/festival.mjs */
+/** Film en compétition, une ligne de films.json */
 export interface Film {
   year: number
   title: string

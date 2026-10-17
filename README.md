@@ -43,9 +43,8 @@ Une carte s'ouvre par l'ancre de l'adresse (`/craft/#diskr`) ; l'art génératif
 en vignette. Les tailles des outils suivent leur conteneur (unités `cqmin`), si bien qu'un
 outil s'affiche de la même façon dans la vignette, dans le cadre et en page seule.
 
-Les films du festival (`src/tools/festival/films.json`) sont produits par
-`node scripts/festival.mjs <liste>`, à partir de la liste des films en compétition
-(tableau séparé par des tabulations), à relancer après chaque édition.
+Les films du festival n'existent que dans `src/tools/festival/films.json`, un film par
+ligne : on y ajoute ceux de chaque édition, avec les noms de pays déjà employés.
 
 ## Dépendances au site
 
