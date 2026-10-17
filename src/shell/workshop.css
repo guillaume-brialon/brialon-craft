@@ -31,15 +31,19 @@
   transition: border-color .15s ease;
 }
 .card:hover { border-color: var(--brand-soft); }
-/* Art génératif et extensions, à regarder plus qu'à lire : cartes en relief */
-.cards:is([data-category="art"], [data-category="extensions"]) .card {
-  --card-shadow: rgba(0, 50, 97, .45);
-  box-shadow: 0 18px 36px -20px var(--card-shadow);
-}
+/* Cartes en relief : toutes en thème clair ; en thème sombre, seulement l'art génératif et les extensions,
+   à regarder plus qu'à lire */
+.card { box-shadow: 0 18px 36px -20px rgba(0, 50, 97, .45); }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .cards .card { --card-shadow: rgba(0, 0, 0, .7); }
+  :root:not([data-theme="light"]) .card { box-shadow: none; }
+  :root:not([data-theme="light"]) .cards:is([data-category="art"], [data-category="extensions"]) .card {
+    box-shadow: 0 18px 36px -20px rgba(0, 0, 0, .7);
+  }
 }
-:root[data-theme="dark"] .cards .card { --card-shadow: rgba(0, 0, 0, .7); }
+:root[data-theme="dark"] .card { box-shadow: none; }
+:root[data-theme="dark"] .cards:is([data-category="art"], [data-category="extensions"]) .card {
+  box-shadow: 0 18px 36px -20px rgba(0, 0, 0, .7);
+}
 .card:has(a:focus-visible) { outline: 2px solid var(--focus); outline-offset: 3px; }
 .card h3 { display: flex; align-items: center; gap: 8px; font-size: 1.05rem; color: var(--ink); }
 .card h3 img { border-radius: 4px; }
@@ -108,10 +112,13 @@ html:has(.bench[open]) { overflow: hidden; }
   padding: 10px;
   border-radius: 30px;
   background: var(--bezel);
-  box-shadow: 0 30px 60px -30px rgba(0, 50, 97, .55);
+  box-shadow: var(--bezel-shadow, none);
 }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .bezel { --bezel: #203b58; } }
-:root[data-theme="dark"] .bezel { --bezel: #203b58; }
+/* Sans ombre en thème clair : seul le thème sombre détache le cadre de la fenêtre */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .bezel { --bezel: #203b58; --bezel-shadow: 0 30px 60px -30px rgba(0, 50, 97, .55); }
+}
+:root[data-theme="dark"] .bezel { --bezel: #203b58; --bezel-shadow: 0 30px 60px -30px rgba(0, 50, 97, .55); }
 
 /* Écran : conteneur de référence des outils (unités cqmin) */
 .screen {
