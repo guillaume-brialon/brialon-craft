@@ -54,6 +54,9 @@
 .festival .stat-scope { font-size: 0.75em; color: var(--muted); }
 .festival .trend { display: grid; gap: 0.15em; }
 .festival .sparkline { display: block; width: 100%; height: auto; cursor: crosshair; touch-action: pan-y; border-radius: 4px; }
+/* Contour au clavier seulement, pas au clic */
+.festival .sparkline:focus { outline: none; }
+.festival .sparkline:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 .festival .sparkline path { fill: none; stroke: var(--brand); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
 .festival .sparkline .cursor { stroke: var(--line-strong); stroke-dasharray: 3 3; }
 .festival .sparkline circle { fill: var(--brand-deep); stroke: var(--surface); stroke-width: 2; }

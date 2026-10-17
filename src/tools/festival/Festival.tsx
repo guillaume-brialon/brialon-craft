@@ -12,34 +12,38 @@ import './festival.css'
 const films = (value: number) => `${formatNumber(value)} ${plural(value, 'film')}`
 
 const Festival = (_: ToolProps) => {
-  // Année mise en avant sur toutes les courbes ; null pour l'ensemble des éditions
-  const [year, setYear] = useState<number | null>(null)
+  // Année retenue (clic, toucher, clavier) et année survolée à la souris, qui la remplace le temps du survol ;
+  // null pour l'ensemble des éditions
+  const [pinned, setPinned] = useState<number | null>(null)
+  const [hovered, setHovered] = useState<number | null>(null)
+  const year = hovered ?? pinned
+  const select = { year, onPreview: setHovered, onPin: setPinned }
 
   return (
     <div className="app festival">
       <div className="heading">
         <span className="title">Festival du film court en plein air de Grenoble</span>
         <p className="lead">
-          Les films en compétition de {FIRST_YEAR} à {LAST_YEAR}. Survolez ou touchez une courbe pour lire une année.
+          Les films en compétition de {FIRST_YEAR} à {LAST_YEAR}. Survolez une courbe pour lire une année ;
+          cliquez ou touchez pour la garder.
         </p>
       </div>
 
       <div className="year">
         <span>{year ?? `${FIRST_YEAR}–${LAST_YEAR}`}</span>
-        <button type="button" className="button ghost" onClick={() => setYear(null)} disabled={year === null}>
+        <button type="button" className="button ghost" onClick={() => setPinned(null)} disabled={pinned === null}>
           Toutes les éditions
         </button>
       </div>
 
       <div className="stats">
-        <Stat label="Films" measure={COUNT} format={films} year={year} onSelect={setYear}/>
-        <Stat label="Durée totale" measure={TOTAL_DURATION} format={value => formatWithUnit(value, 'h')}
-              year={year} onSelect={setYear}/>
+        <Stat label="Films" measure={COUNT} format={films} {...select}/>
+        <Stat label="Durée totale" measure={TOTAL_DURATION} format={value => formatWithUnit(value, 'h')} {...select}/>
         <Stat label="Durée moyenne" measure={MEAN_DURATION} format={value => formatWithUnit(value, 'min')}
-              year={year} onSelect={setYear}/>
+              {...select}/>
         <Stat label="Productions françaises seules" measure={FRENCH_ONLY}
-              format={value => formatWithUnit(100 * value, '%')} year={year} onSelect={setYear}/>
-        <Stat label="Films sans la France" measure={WITHOUT_FRANCE} format={films} year={year} onSelect={setYear}/>
+              format={value => formatWithUnit(100 * value, '%')} {...select}/>
+        <Stat label="Films sans la France" measure={WITHOUT_FRANCE} format={films} {...select}/>
       </div>
 
       <Ranking title="Pays coproducteurs, hors France" entries={COUNTRIES}/>
